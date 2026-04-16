@@ -1,0 +1,28 @@
+{
+  "name": "stitch_high_end_medical_tech_portfolio_home",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "vite",
+    "dev:force": "vite --force",
+    "dev:clean": "node -e \"require('fs').rmSync('node_modules/.vite', { recursive: true, force: true });\" && vite --force",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@react-three/fiber": "^9.5.0",
+    "framer-motion": "^12.38.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.2"
+  }
+}

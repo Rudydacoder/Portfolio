@@ -1,0 +1,45 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Rudrabha Dasgupta Portfolio</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#ffffff",
+              "background-light": "#f0f0f5",
+              "background-dark": "#0B0D1A",
+              "surface-dark": "#10132A",
+              "border-dark": "#1C1F3B",
+              "text-secondary": "#8B8FAD",
+              "text-tertiary": "#5A5E7A",
+              accent: "#C9A84C",
+              "accent-light": "#D4A853"
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"]
+            },
+            borderRadius: { DEFAULT: "4px" }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

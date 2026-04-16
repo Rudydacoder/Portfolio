@@ -1,0 +1,217 @@
+.js-cursor-ready,
+.js-cursor-ready * {
+    cursor: none !important;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .js-cursor-ready,
+    .js-cursor-ready * {
+        cursor: auto !important;
+    }
+}
+
+@keyframes bounceDown {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(6px); opacity: 0.7; }
+}
+
+.scroll-indicator {
+    animation: bounceDown 3s ease-in-out infinite;
+}
+
+.project-card {
+    transition: border-color 0.5s, box-shadow 0.5s;
+}
+
+.project-card::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70%;
+    background: linear-gradient(to top, rgba(11, 13, 26, 0.95) 0%, rgba(11, 13, 26, 0.6) 40%, transparent 100%);
+    z-index: 5;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.project-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(500px circle at var(--mx, 50%) var(--my, 50%), rgba(201, 168, 76, 0.2), transparent 38%);
+    opacity: 0;
+    transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    z-index: 4;
+}
+
+.project-card:hover {
+    box-shadow: 0 0 40px rgba(201, 168, 76, 0.08);
+}
+
+.project-card:hover::before {
+    opacity: 1;
+}
+
+/* "matter" text — golden color only, glow handled by JS */
+.matter-glow {
+    color: #C9A84C;
+    position: relative;
+    display: inline-block;
+    isolation: isolate;
+    animation: matterGlowPulse 2.4s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+.matter-glow::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    width: 170%;
+    height: 170%;
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+    background: radial-gradient(circle at center, rgba(201, 168, 76, 0.55) 0%, rgba(201, 168, 76, 0.22) 40%, transparent 72%);
+    filter: blur(18px);
+    opacity: 0.7;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.matter-glow::after {
+    content: "";
+    position: absolute;
+    inset: -18% -20%;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 50% 55%, rgba(201, 168, 76, 0.26) 0%, transparent 65%);
+    filter: blur(22px);
+    opacity: 0.55;
+    z-index: -2;
+    pointer-events: none;
+}
+
+@keyframes matterGlowPulse {
+    0%, 100% {
+        transform: translateZ(0) scale(1);
+        opacity: 0.98;
+    }
+    50% {
+        transform: translateZ(0) scale(1.01);
+        opacity: 1;
+    }
+}
+
+@keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+    animation: marqueeScroll 22s linear infinite;
+}
+
+.marquee-fade-edges {
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+@keyframes wavePulse {
+    0% { opacity: 0.22; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(1.02); }
+    100% { opacity: 0.22; transform: scale(1); }
+}
+
+.animate-glow-pulse {
+    position: relative;
+    isolation: isolate;
+    animation: buttonGlow 3.2s ease-in-out infinite;
+}
+
+.animate-glow-pulse::before {
+    content: "";
+    position: absolute;
+    inset: -22%;
+    border-radius: 9999px;
+    background: radial-gradient(circle at center, rgba(201, 168, 76, 0.28) 0%, rgba(201, 168, 76, 0.14) 40%, transparent 72%);
+    filter: blur(10px);
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes buttonGlow {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+.terminal-input {
+    caret-color: #D8BC63;
+    animation: terminalCaretPulse 1s steps(1, end) infinite;
+}
+
+.terminal-shell {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #2A2314;
+    background:
+        radial-gradient(circle at 80% -10%, rgba(201, 168, 76, 0.08), transparent 36%),
+        radial-gradient(circle at 0% 100%, rgba(201, 168, 76, 0.05), transparent 42%),
+        #0A0A0A;
+}
+
+.terminal-shell::before {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    background: radial-gradient(circle at 50% 0%, rgba(201, 168, 76, 0.08), transparent 42%);
+    pointer-events: none;
+}
+
+.terminal-grid {
+    background-image:
+        linear-gradient(rgba(201, 168, 76, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201, 168, 76, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.terminal-cursor-visible,
+.terminal-cursor-visible * {
+    cursor: auto !important;
+}
+
+@keyframes terminalCaretPulse {
+    0%, 49% { caret-color: #D8BC63; }
+    50%, 100% { caret-color: transparent; }
+}
+
+.project-card {
+    transition: border-color 500ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1), transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-card .x-ray-data {
+    transition: opacity 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-card:hover .x-ray-data {
+    opacity: 0.65;
+}
+
+@media (max-width: 1024px) {
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track,
+    .animate-glow-pulse,
+    .matter-glow {
+        animation: none !important;
+    }
+
+    .project-card,
+    .project-card .x-ray-data,
+    .project-card::before {
+        transition-duration: 120ms;
+    }
+}

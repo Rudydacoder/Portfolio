@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroSync — Rudrabha Dasgupta</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#b5922a;
+  --gold2:#d4a93a;
+  --gold-dim:rgba(181,146,42,0.15);
+  --white:#f0ece4;
+  --dim:#6b6560;
+  --bg:#0a0905;
+  --panel:rgba(10,9,5,.88);
+  --panel-border:rgba(181,146,42,.20);
+  --danger:#ff5050;
+  --ok:#50ff8c;
+  --warn:#ffb74d;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+
+/* ── NAV (match other product pages) ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 40px;
+  background:linear-gradient(180deg,rgba(10,9,5,.95) 0%,transparent 100%);
+}
+.nav-brand{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;font-weight:500;letter-spacing:1px;
+  color:var(--white);text-transform:uppercase;
+}
+.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:16px}
+.nav-grid span{width:7px;height:7px;background:var(--white);display:block}
+.nav-links{display:flex;gap:28px;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{
+  font-size:12px;font-weight:500;letter-spacing:1.5px;color:var(--white);
+  text-decoration:none;text-transform:uppercase;opacity:.85;
+  transition:opacity .2s;
+}
+.nav-links a:hover{opacity:1}
+
+/* ── TOP WAVE (subtle header continuation) ── */
+#top-wave{
+  position:fixed;top:0;left:0;right:0;
+  height:170px;
+  z-index:90;
+  pointer-events:none;
+  opacity:.22;
+}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap:42px;
+  align-items:end;
+  padding:0 60px 80px 60px;
+  position:relative;
+  overflow:hidden;
+}
+#hero-canvas{position:absolute;inset:0;z-index:0;opacity:.28}
+.hero-left{position:relative;z-index:2;max-width:820px}
+.hero-right{position:relative;z-index:2;display:flex;justify-content:flex-end}
+
+.hero-label{
+  font-size:11px;letter-spacing:3px;color:var(--gold);
+  text-transform:uppercase;margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-label::before{content:'';width:30px;height:1px;background:var(--gold)}
+
+h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(72px,9vw,140px);
+  line-height:.92;
+  color:var(--white);
+  letter-spacing:1px;
+  margin-bottom:18px;
+}
+h1 em{color:var(--gold);font-style:normal}
+
+.hero-sub{
+  font-size:16px;
+  line-height:1.7;
+  color:var(--dim);
+  max-width:620px;
+  font-weight:300;
+  margin-bottom:34px;
+}
+
+.hero-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 28px;
+  border:1px solid rgba(181,146,42,.4);
+  border-radius:100px;
+  font-size:13px;
+  font-weight:500;
+  color:var(--white);
+  text-decoration:none;
+  cursor:pointer;
+  background:transparent;
+  transition:border-color .25s,background .25s;
+  letter-spacing:.5px;
+}
+.hero-cta:hover{border-color:var(--gold);background:rgba(181,146,42,.08)}
+.hero-cta svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── LIVE DATA SIMULATOR (dashboard mock) ── */
+.dash{
+  width:min(520px, 100%);
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(181,146,42,.22);
+  background:rgba(7,8,15,.92);
+  box-shadow:0 18px 60px rgba(0,0,0,0.45);
+}
+.dash-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  background:rgba(10,9,5,.70);
+}
+.dash-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,236,228,.55)}
+.dash-badge{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);border:1px solid rgba(181,146,42,.25);padding:4px 10px;border-radius:999px}
+
+.dash-body{padding:16px}
+.weather{
+  display:flex;gap:10px;flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.wbtn{
+  border:1px solid rgba(181,146,42,.16);
+  background:rgba(255,255,255,0.03);
+  color:rgba(240,236,228,.82);
+  font-family:inherit;
+  font-size:11px;
+  letter-spacing:1.1px;
+  text-transform:uppercase;
+  padding:10px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:background .2s,border-color .2s,transform .2s,box-shadow .2s,color .2s;
+}
+.wbtn:hover{background:rgba(181,146,42,.08);border-color:rgba(181,146,42,.32);transform:translateY(-1px);box-shadow:0 0 16px rgba(181,146,42,.12)}
+.wbtn.active{background:rgba(181,146,42,0.16);border-color:rgba(181,146,42,.55);color:var(--gold2)}
+
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.metric{
+  background:rgba(10,9,5,.58);
+  border:1px solid rgba(181,146,42,.12);
+  border-radius:14px;
+  padding:12px;
+}
+.metric-k{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(240,236,228,.35);margin-bottom:6px}
+.metric-v{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;color:var(--white);letter-spacing:1px}
+.metric-v span{color:var(--gold)}
+.metric-s{font-size:12px;color:var(--dim);margin-top:6px;line-height:1.4}
+
+.chart-wrap{
+  background:rgba(10,9,5,.58);
+  border:1px solid rgba(181,146,42,.12);
+  border-radius:14px;
+  padding:12px;
+}
+.chart-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.chart-head .k{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(240,236,228,.35)}
+.chart-head .s{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(240,236,228,.55)}
+#soilChart{display:block;width:100%;height:86px}
+
+.notifs{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.notif{
+  display:flex;gap:10px;align-items:flex-start;
+  border-left:3px solid rgba(181,146,42,.55);
+  background:rgba(181,146,42,.06);
+  border:1px solid rgba(181,146,42,.12);
+  border-radius:12px;
+  padding:10px 12px;
+}
+.notif .t{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.notif .b{font-size:12px;color:rgba(240,236,228,.78);line-height:1.45}
+.notif.danger{border-left-color:rgba(255,80,80,.75);background:rgba(255,80,80,.06);border-color:rgba(255,80,80,.14)}
+.notif.danger .t{color:var(--danger)}
+.notif.ok{border-left-color:rgba(80,255,140,.70);background:rgba(80,255,140,.05);border-color:rgba(80,255,140,.14)}
+.notif.ok .t{color:var(--ok)}
+
+/* ── SECTION SHARED ── */
+.section-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:11px;
+  letter-spacing:3px;
+  color:var(--gold);
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-num::before{content:'';width:30px;height:1px;background:var(--gold)}
+
+h2{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(48px,6vw,82px);
+  line-height:.95;
+  color:var(--white);
+  letter-spacing:.5px;
+  margin-bottom:24px;
+}
+
+.p{
+  font-size:15px;
+  line-height:1.75;
+  color:var(--dim);
+  font-weight:300;
+  max-width:560px;
+}
+
+/* ── SHOWCASE / HARDWARE MODEL ── */
+#showcase{
+  min-height:100vh;
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  gap:0;
+  overflow:hidden;
+}
+.showcase-left{position:relative;z-index:2;padding:100px 60px 100px 60px}
+.showcase-right{
+  position:relative;
+  z-index:2;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:60px 60px 60px 20px;
+}
+
+.spec-list{display:flex;flex-direction:column;gap:0;margin-top:34px}
+.spec-item{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06);gap:20px}
+.spec-item:last-child{border-bottom:none}
+.spec-key{font-size:11px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;padding-top:2px;white-space:nowrap}
+.spec-val{font-size:14px;color:var(--white);font-weight:400;text-align:right;line-height:1.5}
+.spec-val strong{color:var(--gold);font-weight:500}
+
+/* 3D viewport */
+#hwViewport{
+  position:relative;
+  width:100%;
+  height:min(86vh, 820px);
+  min-height:560px;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(181,146,42,.22);
+  background:#07080f;
+  box-shadow:0 18px 60px rgba(0,0,0,0.45);
+}
+#hwCanvas{display:block;width:100%;height:100%}
+
+.hud{
+  position:absolute;
+  top:16px;
+  left:16px;
+  right:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  pointer-events:none;
+}
+.hud .tag{
+  pointer-events:none;
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:rgba(240,236,228,.55);
+  background:rgba(10,9,5,.68);
+  border:1px solid rgba(181,146,42,.14);
+  border-radius:999px;
+  padding:8px 12px;
+  backdrop-filter: blur(10px);
+}
+
+.tooltip{
+  position:absolute;
+  left:0;top:0;
+  transform:translate(0,0);
+  min-width:220px;
+  max-width:280px;
+  background:rgba(10,9,5,.82);
+  border:1px solid rgba(181,146,42,.20);
+  border-left:3px solid var(--gold);
+  border-radius:12px;
+  padding:10px 12px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .18s;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+.tooltip.show{opacity:1}
+.tooltip .tt{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.tooltip .tb{font-size:12px;color:rgba(240,236,228,.82);line-height:1.45}
+
+.hw-legend{
+  position:absolute;
+  bottom:16px;
+  left:16px;
+  right:16px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.hw-pill{
+  font-size:10px;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:rgba(240,236,228,.70);
+  border:1px solid rgba(181,146,42,.14);
+  background:rgba(255,255,255,0.03);
+  padding:8px 10px;
+  border-radius:999px;
+  cursor:default;
+}
+.hw-pill b{color:var(--gold2);font-weight:600}
+
+/* ── ROI ── */
+#roi{padding:140px 60px;max-width:1200px;margin:0 auto}
+.roi-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:32px;align-items:start}
+.roi-card{
+  background:rgba(10,9,5,.72);
+  border:1px solid rgba(181,146,42,.14);
+  border-radius:18px;
+  padding:18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+}
+.roi-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:12px 0}
+.roi-row label{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(240,236,228,.40)}
+.roi-row select{width:220px;max-width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(181,146,42,.18);background:rgba(255,255,255,0.03);color:var(--white);outline:none}
+
+input[type=range]{width:100%;-webkit-appearance:none;height:3px;border-radius:2px;outline:none;cursor:pointer;background:rgba(181,146,42,.22)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);cursor:pointer;box-shadow:0 0 10px rgba(181,146,42,.55)}
+
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.kpi{background:rgba(255,255,255,0.03);border:1px solid rgba(181,146,42,.12);border-radius:16px;padding:14px}
+.kpi .k{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(240,236,228,.35);margin-bottom:6px}
+.kpi .v{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:1px;line-height:1;color:var(--white)}
+.kpi .v span{color:var(--gold)}
+.kpi .s{font-size:12px;color:var(--dim);margin-top:6px;line-height:1.4}
+
+.note{font-size:12px;color:rgba(240,236,228,.58);line-height:1.6;margin-top:12px}
+
+/* ── STACK MAP ── */
+#stack{padding:140px 60px;max-width:1200px;margin:0 auto}
+.stack-card{background:rgba(10,9,5,.72);border:1px solid rgba(181,146,42,.14);border-radius:18px;padding:18px}
+#stackSvg{width:100%;height:auto;display:block}
+.snode{fill:rgba(255,255,255,0.02);stroke:rgba(181,146,42,.18);stroke-width:1}
+.slabel{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:1px;fill:rgba(240,236,228,.82)}
+.smini{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2px;fill:rgba(240,236,228,.48)}
+.sline{stroke:rgba(240,236,228,.18);stroke-width:2;stroke-linecap:round}
+.sline.active{stroke:rgba(181,146,42,.85);filter: drop-shadow(0 0 10px rgba(181,146,42,.25));}
+.snode.active{stroke:rgba(181,146,42,.85)}
+
+/* ── TIMELINE ── */
+#timeline{padding:140px 60px;max-width:1200px;margin:0 auto}
+.tl{
+  display:grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap:28px;
+  align-items:start;
+}
+.tl-list{display:flex;flex-direction:column;gap:10px}
+.tl-btn{
+  text-align:left;
+  cursor:pointer;
+  border:1px solid rgba(181,146,42,.14);
+  background:rgba(255,255,255,0.03);
+  border-radius:16px;
+  padding:14px 16px;
+  transition:background .2s,border-color .2s,transform .2s;
+}
+.tl-btn:hover{background:rgba(181,146,42,.08);border-color:rgba(181,146,42,.30);transform:translateY(-1px)}
+.tl-btn.active{background:rgba(181,146,42,.12);border-color:rgba(181,146,42,.45)}
+.tl-btn .k{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(240,236,228,.40)}
+.tl-btn .v{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;color:var(--white);margin-top:4px}
+
+.tl-card{background:rgba(10,9,5,.72);border:1px solid rgba(181,146,42,.14);border-radius:18px;overflow:hidden}
+.tl-card-head{padding:16px;border-bottom:1px solid rgba(255,255,255,.06)}
+.tl-card-head .t{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold2)}
+.tl-card-head .h{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:1px;color:var(--white);line-height:1;margin-top:6px}
+.tl-card-body{padding:16px;display:grid;grid-template-columns:1fr;gap:12px}
+.tl-media{border-radius:14px;border:1px solid rgba(181,146,42,.12);background:radial-gradient(600px 280px at 20% 30%, rgba(181,146,42,0.12), transparent 70%), rgba(255,255,255,0.02);overflow:hidden}
+.tl-media svg{display:block;width:100%;height:auto}
+
+.callout{
+  border-left:3px solid rgba(181,146,42,.55);
+  background:rgba(181,146,42,.06);
+  border:1px solid rgba(181,146,42,.12);
+  border-radius:14px;
+  padding:12px 14px;
+}
+.callout .tt{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.callout .tb{font-size:13px;color:rgba(240,236,228,.80);line-height:1.65}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex;justify-content:space-between;align-items:center}
+.footer-text{font-size:12px;color:var(--dim);letter-spacing:.5px}
+.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--white);letter-spacing:3px}
+
+/* scrollbar */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(181,146,42,.3);border-radius:2px}
+
+/* responsive */
+@media (max-width: 1060px){
+  nav{padding:18px 20px}
+  .nav-links{gap:18px}
+  #hero{grid-template-columns:1fr;padding:0 0 70px 20px}
+  .hero-right{justify-content:flex-start;padding-right:20px}
+  #showcase{grid-template-columns:1fr}
+  .showcase-left{padding:90px 20px 30px 20px}
+  .showcase-right{height:auto;padding:0 20px 90px 20px}
+  #hwViewport{height:72vh;min-height:520px}
+  #roi,#stack,#timeline{padding:110px 20px}
+  .roi-grid{grid-template-columns:1fr}
+  .tl{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-grid"><span></span><span></span><span></span><span></span></div>
+    Rudrabha Dasgupta | Innovator
+  </div>
+  <div class="nav-links">
+    <a href="#hero">Live Data</a>
+    <a href="#showcase">Hardware</a>
+    <a href="#roi">ROI</a>
+    <a href="#stack">Tech Map</a>
+    <a href="#timeline">Timeline</a>
+    <a href="./index.html">Back</a>
+  </div>
+</nav>
+
+<!-- SUBTLE TOP WAVE OVERLAY -->
+<canvas id="top-wave" aria-hidden="true"></canvas>
+
+<!-- HERO (LIVE DATA SIMULATOR) -->
+<section id="hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+  <div class="hero-left">
+    <div class="hero-label">Selected Work · AgriTech · Full‑Stack Systems</div>
+    <h1>Agro<em>Sync</em>.</h1>
+    <p class="hero-sub">
+      AgroSync is an intelligent precision-farming ecosystem that turns soil signals + weather context into real-time decisions.
+      It minimizes guesswork by connecting rugged sensor nodes to cloud analytics and a farmer-friendly mobile dashboard.
+    </p>
+    <a class="hero-cta" href="#showcase">
+      Explore the hardware
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-right">
+    <div class="dash" aria-label="Live Data Simulator">
+      <div class="dash-head">
+        <div class="dash-title">Live Data Simulator · Interactive Hero</div>
+        <div class="dash-badge" id="dashMode">Sunny</div>
+      </div>
+      <div class="dash-body">
+        <div class="weather" role="group" aria-label="Weather conditions">
+          <button class="wbtn active" data-weather="sunny" type="button">Sunny</button>
+          <button class="wbtn" data-weather="rain" type="button">Heavy Rain</button>
+          <button class="wbtn" data-weather="drought" type="button">Drought</button>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <div class="metric-k">Soil Moisture</div>
+            <div class="metric-v"><span id="mMoist">32</span>%</div>
+            <div class="metric-s" id="mMoistHint">Stable · Plot A</div>
+          </div>
+          <div class="metric">
+            <div class="metric-k">System Action</div>
+            <div class="metric-v" style="font-size:30px"><span id="mAction">MON</span></div>
+            <div class="metric-s" id="mActionHint">Monitoring sensors</div>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <div class="chart-head">
+            <div class="k">Moisture Trend</div>
+            <div class="s"><span id="mNotifDot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:rgba(181,146,42,.65);margin-right:6px"></span><span id="mNotif">Nominal</span></div>
+          </div>
+          <canvas id="soilChart" width="480" height="86"></canvas>
+        </div>
+
+        <div class="notifs" id="notifs"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE / DRILL-DOWN HARDWARE MODEL -->
+<section id="showcase">
+  <div class="showcase-left">
+    <div class="section-num">01 — Drill‑Down Hardware</div>
+    <h2>Rugged<br>sensor<br>node.</h2>
+    <p class="p">
+      Hover the 3D model to reveal component choices. This isn’t just a "cool gadget"—it’s an end‑to‑end system designed for
+      corrosion, connectivity constraints, and real farm maintenance.
+    </p>
+
+    <div class="spec-list">
+      <div class="spec-item"><span class="spec-key">Sensor</span><span class="spec-val"><strong>Capacitive</strong> moisture + temp</span></div>
+      <div class="spec-item"><span class="spec-key">Compute</span><span class="spec-val"><strong>ESP32</strong> low‑power edge logic</span></div>
+      <div class="spec-item"><span class="spec-key">Network</span><span class="spec-val">LoRa · low‑connectivity ready</span></div>
+      <div class="spec-item"><span class="spec-key">Power</span><span class="spec-val">Solar + battery buffer</span></div>
+      <div class="spec-item"><span class="spec-key">Cloud</span><span class="spec-val">Firebase / realtime rules</span></div>
+      <div class="spec-item"><span class="spec-key">App</span><span class="spec-val">Flutter dashboard UI</span></div>
+    </div>
+  </div>
+
+  <div class="showcase-right">
+    <div id="hwViewport" aria-label="3D hardware model viewport">
+      <canvas id="hwCanvas"></canvas>
+      <div class="hud" aria-hidden="true">
+        <div class="tag">Hover parts for specs</div>
+        <div class="tag">Scroll · Orbit · Inspect</div>
+      </div>
+      <div class="tooltip" id="hwTip" aria-hidden="true">
+        <div class="tt" id="hwTipT">Probe</div>
+        <div class="tb" id="hwTipB">Capacitive moisture sensor — corrosion resistant for long-term soil deployment.</div>
+      </div>
+      <div class="hw-legend" aria-hidden="true">
+        <div class="hw-pill"><b>Probe</b> · moisture</div>
+        <div class="hw-pill"><b>Solar</b> · energy</div>
+        <div class="hw-pill"><b>LoRa</b> · long‑range</div>
+        <div class="hw-pill"><b>ESP32</b> · edge logic</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section id="roi">
+  <div class="section-num">02 — ROI Calculator</div>
+  <h2>Value<br>you can<br>measure.</h2>
+  <p class="p">Move the slider and select a crop. AgroSync estimates resource savings from localized sensing + automated triggers.</p>
+
+  <div class="roi-grid">
+    <div class="roi-card">
+      <div class="roi-row">
+        <label for="acreSlider">Farm Size (Acres)</label>
+        <div style="min-width:140px;text-align:right"><span style="font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1px"><span id="acreVal" style="color:var(--gold)">10</span></span><span style="color:rgba(240,236,228,.6);margin-left:6px">ac</span></div>
+      </div>
+      <input id="acreSlider" type="range" min="1" max="500" step="1" value="10" aria-label="Farm size in acres">
+
+      <div class="roi-row" style="margin-top:16px">
+        <label for="cropSel">Crop Type</label>
+        <select id="cropSel" aria-label="Crop type">
+          <option value="wheat">Wheat</option>
+          <option value="rice">Rice</option>
+          <option value="cotton">Cotton</option>
+          <option value="vegetables">Vegetables</option>
+        </select>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="k">Water Saved</div>
+          <div class="v"><span id="waterSaved">0</span><span style="font-size:18px;color:rgba(240,236,228,.55);margin-left:6px">L</span></div>
+          <div class="s" id="waterNote">Per growing season estimate</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Fertilizer Saved</div>
+          <div class="v"><span id="fertSaved">0</span><span style="font-size:18px;color:rgba(240,236,228,.55);margin-left:6px">kg</span></div>
+          <div class="s" id="fertNote">Reduced over-application</div>
+        </div>
+      </div>
+
+      <div class="note">These numbers are conservative placeholders to demonstrate product logic. Calibrate with local evapotranspiration + soil type for real deployments.</div>
+    </div>
+
+    <div class="roi-card">
+      <div class="metric-k" style="margin-bottom:10px">Why this matters</div>
+      <div class="callout">
+        <div class="tt">Recruiter value</div>
+        <div class="tb">Shows product sense: AgroSync is a business solution (resource optimization + yield protection), not just hardware.</div>
+      </div>
+      <div style="height:10px"></div>
+      <div class="callout">
+        <div class="tt">Decision logic</div>
+        <div class="tb">Weather context → soil trend → rule engine → action (irrigation / alert / recommendation) → app feedback loop.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK MAP -->
+<section id="stack">
+  <div class="section-num">03 — Interactive Tech Stack Map</div>
+  <h2>Systems<br>thinking<br>map.</h2>
+  <p class="p">Hover nodes to see the end-to-end architecture light up—from sensing to cloud to app.</p>
+
+  <div class="stack-card">
+    <svg id="stackSvg" viewBox="0 0 980 280" role="img" aria-label="AgroSync tech stack flow map">
+      <!-- lines -->
+      <path id="l1" class="sline" d="M190 140 H310" />
+      <path id="l2" class="sline" d="M420 140 H540" />
+      <path id="l3" class="sline" d="M650 140 H770" />
+      <path id="l4" class="sline" d="M840 110 V70" />
+      <path id="l5" class="sline" d="M840 170 V210" />
+
+      <!-- nodes -->
+      <g class="stack-node" data-node="sensor">
+        <rect class="snode" x="40" y="110" rx="16" ry="16" width="150" height="60" />
+        <text class="slabel" x="115" y="136" text-anchor="middle">Soil Sensor</text>
+        <text class="smini" x="115" y="154" text-anchor="middle">Moisture · Temp · NPK</text>
+      </g>
+      <g class="stack-node" data-node="mcu">
+        <rect class="snode" x="310" y="110" rx="16" ry="16" width="150" height="60" />
+        <text class="slabel" x="385" y="136" text-anchor="middle">Arduino/ESP32</text>
+        <text class="smini" x="385" y="154" text-anchor="middle">Edge logic · Power mgmt</text>
+      </g>
+      <g class="stack-node" data-node="radio">
+        <rect class="snode" x="540" y="110" rx="16" ry="16" width="150" height="60" />
+        <text class="slabel" x="615" y="136" text-anchor="middle">LoRa / Gateway</text>
+        <text class="smini" x="615" y="154" text-anchor="middle">Low connectivity ready</text>
+      </g>
+      <g class="stack-node" data-node="cloud">
+        <rect class="snode" x="770" y="110" rx="16" ry="16" width="170" height="60" />
+        <text class="slabel" x="855" y="136" text-anchor="middle">Firebase / Cloud</text>
+        <text class="smini" x="855" y="154" text-anchor="middle">Rules · Realtime · Storage</text>
+      </g>
+
+      <g class="stack-node" data-node="app" >
+        <rect class="snode" x="760" y="20" rx="16" ry="16" width="190" height="60" />
+        <text class="slabel" x="855" y="46" text-anchor="middle">Flutter App UI</text>
+        <text class="smini" x="855" y="64" text-anchor="middle">Dashboard · Alerts · Trends</text>
+      </g>
+      <g class="stack-node" data-node="actions" >
+        <rect class="snode" x="760" y="200" rx="16" ry="16" width="190" height="60" />
+        <text class="slabel" x="855" y="226" text-anchor="middle">Actuators</text>
+        <text class="smini" x="855" y="244" text-anchor="middle">Pump trigger · Recommendations</text>
+      </g>
+    </svg>
+
+    <div class="note" style="margin-top:12px">Hover: Sensor → MCU → Cloud. Watch the architecture illuminate end-to-end.</div>
+  </div>
+</section>
+
+<!-- CHALLENGE & PIVOT TIMELINE -->
+<section id="timeline">
+  <div class="section-num">04 — Challenge & Pivot</div>
+  <h2>Iterate.<br>Fail.<br>Ship.</h2>
+  <p class="p">Click milestones to see what broke and how it was redesigned.</p>
+
+  <div class="tl">
+    <div class="tl-list" role="tablist" aria-label="Challenge timeline">
+      <button type="button" class="tl-btn active" data-step="v1" role="tab" aria-selected="true"><div class="k">Prototype v1</div><div class="v">Corrosion + Drift</div></button>
+      <button type="button" class="tl-btn" data-step="v2" role="tab" aria-selected="false"><div class="k">Prototype v2</div><div class="v">Power Budget</div></button>
+      <button type="button" class="tl-btn" data-step="v3" role="tab" aria-selected="false"><div class="k">Prototype v3</div><div class="v">Connectivity</div></button>
+      <button type="button" class="tl-btn" data-step="v4" role="tab" aria-selected="false"><div class="k">Prototype v4</div><div class="v">Signal → Action</div></button>
+    </div>
+
+    <div class="tl-card" id="tlCard" role="tabpanel">
+      <div class="tl-card-head">
+        <div class="t" id="tlTag">Prototype v1</div>
+        <div class="h" id="tlTitle">Corrosion + Drift</div>
+      </div>
+      <div class="tl-card-body">
+        <div class="tl-media" aria-label="Failure photo placeholder">
+          <!-- Inline "messy breadboard" illustration placeholder (swap with your real photos anytime) -->
+          <svg viewBox="0 0 980 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="rgba(181,146,42,0.12)"/>
+                <stop offset="1" stop-color="rgba(181,146,42,0.00)"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="980" height="260" fill="rgba(0,0,0,0)"/>
+            <rect x="22" y="22" width="936" height="216" rx="18" fill="rgba(255,255,255,0.02)" stroke="rgba(181,146,42,0.14)"/>
+            <path d="M60 80 C160 40, 260 140, 360 90 S 560 120, 680 70 S 840 120, 920 90" stroke="rgba(181,146,42,0.55)" stroke-width="3" fill="none"/>
+            <path d="M70 170 C180 210, 260 120, 380 160 S 560 150, 700 200 S 820 130, 920 170" stroke="rgba(240,236,228,0.18)" stroke-width="2" fill="none"/>
+            <rect x="110" y="110" width="150" height="70" rx="12" fill="url(#g)" stroke="rgba(181,146,42,0.18)"/>
+            <rect x="310" y="68" width="180" height="52" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(181,146,42,0.14)"/>
+            <rect x="540" y="140" width="220" height="62" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(181,146,42,0.14)"/>
+            <circle cx="810" cy="94" r="18" fill="rgba(181,146,42,0.10)" stroke="rgba(181,146,42,0.24)"/>
+            <circle cx="860" cy="170" r="14" fill="rgba(255,255,255,0.03)" stroke="rgba(181,146,42,0.14)"/>
+            <text x="70" y="52" font-family="'DM Mono', monospace" font-size="12" fill="rgba(240,236,228,0.45)">Replace with your prototype photo</text>
+          </svg>
+        </div>
+
+        <div class="callout">
+          <div class="tt">What went wrong</div>
+          <div class="tb" id="tlWrong">Early probes showed drift over time due to soil chemistry + electrode oxidation, causing unstable moisture readings and false triggers.</div>
+        </div>
+        <div class="callout">
+          <div class="tt">The pivot</div>
+          <div class="tb" id="tlPivot">Switched to capacitive sensing, improved sealing and conformal coating, and added calibration smoothing in firmware.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-text">AgroSync · Precision Farming Ecosystem · 2026</span>
+  <span class="footer-brand">Rudrabha Dasgupta</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+// ─────────────────────────────────────────────────────────
+//  HERO CANVAS — animated gold mesh wave (matching ref)
+// ─────────────────────────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+  const COLS = 40, ROWS = 18;
+
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function drawWave(){
+    ctx.clearRect(0,0,W,H);
+    t += 0.008;
+
+    const pts = [];
+    for(let r=0;r<=ROWS;r++){
+      pts[r]=[];
+      for(let c=0;c<=COLS;c++){
+        const nx = c/COLS, ny = r/ROWS;
+        const wave1 = Math.sin(nx*6 - t*1.8 + ny*2) * 0.08;
+        const wave2 = Math.sin(nx*3 + t*1.2 - ny*3) * 0.06;
+        const wave3 = Math.cos(nx*8 - t*2.5 + ny*1) * 0.04;
+        const dy = (wave1+wave2+wave3) * H;
+        pts[r][c] = {
+          x: nx*W,
+          y: H*0.52 + dy - (1-ny)*H*0.25
+        };
+      }
+    }
+
+    for(let r=0;r<=ROWS;r++){
+      const rowAlpha = 0.04 + (r/ROWS)*0.18;
+      ctx.beginPath();
+      for(let c=0;c<=COLS;c++){
+        const p=pts[r][c];
+        c===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+      }
+      ctx.strokeStyle=`rgba(181,146,42,${rowAlpha})`;
+      ctx.lineWidth=0.7;
+      ctx.stroke();
+    }
+
+    for(let c=0;c<=COLS;c++){
+      const colAlpha = 0.03 + Math.sin(c/COLS*Math.PI)*0.12;
+      ctx.beginPath();
+      for(let r=0;r<=ROWS;r++){
+        const p=pts[r][c];
+        r===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+      }
+      ctx.strokeStyle=`rgba(181,146,42,${colAlpha})`;
+      ctx.lineWidth=0.6;
+      ctx.stroke();
+    }
+
+    const grd=ctx.createRadialGradient(W*0.75,H*0.38,0,W*0.75,H*0.38,W*0.4);
+    grd.addColorStop(0,'rgba(181,146,42,0.04)');
+    grd.addColorStop(1,'transparent');
+    ctx.fillStyle=grd;
+    ctx.fillRect(0,0,W,H);
+
+    requestAnimationFrame(drawWave);
+  }
+  drawWave();
+})();
+
+// ─────────────────────────────────────────────────────────
+//  TOP WAVE OVERLAY — subtle continuation under nav
+// ─────────────────────────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('top-wave');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+  const COLS = 46, ROWS = 10;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = Math.max(120, canvas.offsetHeight || 170);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t += 0.008;
+
+    const pts=[];
+    for(let r=0;r<=ROWS;r++){
+      pts[r]=[];
+      for(let c=0;c<=COLS;c++){
+        const nx=c/COLS, ny=r/ROWS;
+        const wave1=Math.sin(nx*6 - t*1.6 + ny*2.2) * 0.10;
+        const wave2=Math.cos(nx*3 + t*1.1 - ny*2.6) * 0.06;
+        const dy=(wave1+wave2) * H;
+        pts[r][c]={x:nx*W,y:H*0.68 + dy - (1-ny)*H*0.55};
+      }
+    }
+
+    for(let r=0;r<=ROWS;r++){
+      const rowAlpha = 0.016 + (r/ROWS)*0.06;
+      ctx.beginPath();
+      for(let c=0;c<=COLS;c++){
+        const p=pts[r][c];
+        c===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+      }
+      ctx.strokeStyle=`rgba(181,146,42,${rowAlpha})`;
+      ctx.lineWidth=0.75;
+      ctx.stroke();
+    }
+
+    for(let c=0;c<=COLS;c++){
+      const colAlpha = 0.012 + Math.sin(c/COLS*Math.PI)*0.04;
+      ctx.beginPath();
+      for(let r=0;r<=ROWS;r++){
+        const p=pts[r][c];
+        r===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+      }
+      ctx.strokeStyle=`rgba(181,146,42,${colAlpha})`;
+      ctx.lineWidth=0.65;
+      ctx.stroke();
+    }
+
+    const grd=ctx.createRadialGradient(W*0.22,H*0.55,0,W*0.22,H*0.55,W*0.55);
+    grd.addColorStop(0,'rgba(181,146,42,0.030)');
+    grd.addColorStop(1,'transparent');
+    ctx.fillStyle=grd;
+    ctx.fillRect(0,0,W,H);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─────────────────────────────────────────────────────────
+//  1) LIVE DATA SIMULATOR (hero dashboard)
+// ─────────────────────────────────────────────────────────
+(function(){
+  const btns = Array.from(document.querySelectorAll('.wbtn'));
+  const modeEl = document.getElementById('dashMode');
+  const moistEl = document.getElementById('mMoist');
+  const moistHintEl = document.getElementById('mMoistHint');
+  const actionEl = document.getElementById('mAction');
+  const actionHintEl = document.getElementById('mActionHint');
+  const notifDot = document.getElementById('mNotifDot');
+  const notifEl = document.getElementById('mNotif');
+  const notifs = document.getElementById('notifs');
+
+  const chart = document.getElementById('soilChart');
+  const ctx = chart.getContext('2d');
+
+  const S = {
+    mode: 'sunny',
+    moisture: 32,
+    target: 32,
+    history: Array.from({length: 44}, () => 32),
+    lastPush: performance.now(),
+    lastNotif: 0,
+  };
+
+  const MODE = {
+    sunny: {
+      label: 'Sunny',
+      target: 30,
+      notif: { cls: 'ok', title: 'Status', body: 'Monitoring · sensors nominal · no action required.' },
+      action: { short: 'MON', hint: 'Monitoring sensors' },
+      dot: 'rgba(181,146,42,.65)'
+    },
+    rain: {
+      label: 'Heavy Rain',
+      target: 44,
+      notif: { cls: 'ok', title: 'Update', body: 'Rain detected · irrigation paused · runoff risk monitored.' },
+      action: { short: 'PAUSE', hint: 'Irrigation paused' },
+      dot: 'rgba(255,183,77,.75)'
+    },
+    drought: {
+      label: 'Drought',
+      target: 18,
+      notif: { cls: 'danger', title: 'Action', body: 'Automated Irrigation Triggered · soil moisture dropping.' },
+      action: { short: 'IRR', hint: 'Pump trigger dispatched' },
+      dot: 'rgba(255,80,80,.75)'
+    }
+  };
+
+  function pushNotif(kind){
+    const n = MODE[kind].notif;
+    const el = document.createElement('div');
+    el.className = `notif ${n.cls}`;
+    el.innerHTML = `<div><div class="t">${n.title}</div><div class="b">${n.body}</div></div>`;
+    notifs.prepend(el);
+    while(notifs.children.length > 3) notifs.removeChild(notifs.lastChild);
+  }
+
+  function setMode(kind){
+    S.mode = kind;
+    const M = MODE[kind];
+    S.target = M.target;
+    modeEl.textContent = M.label;
+    btns.forEach(b => b.classList.toggle('active', b.dataset.weather === kind));
+
+    // UX: show a new notification on each intentional toggle
+    pushNotif(kind);
+
+    actionEl.textContent = M.action.short;
+    actionHintEl.textContent = M.action.hint;
+    notifDot.style.background = M.dot;
+    notifEl.textContent = kind === 'drought' ? 'Alert' : (kind === 'rain' ? 'Weather' : 'Nominal');
+
+    moistHintEl.textContent = kind === 'drought' ? 'Dropping · Plot A' : (kind === 'rain' ? 'Rising · Plot A' : 'Stable · Plot A');
+  }
+
+  btns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.weather)));
+  pushNotif('sunny');
+
+  function drawChart(){
+    const w = chart.width, h = chart.height;
+    ctx.clearRect(0,0,w,h);
+
+    // bg
+    ctx.fillStyle = 'rgba(10,9,5,0.35)';
+    ctx.fillRect(0,0,w,h);
+
+    // grid
+    ctx.strokeStyle = 'rgba(181,146,42,0.10)';
+    ctx.lineWidth = 1;
+    for(let i=0;i<4;i++){
+      const y = (i/3)*h;
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke();
+    }
+
+    // line
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(212,169,58,0.95)';
+    ctx.beginPath();
+    S.history.forEach((v,i)=>{
+      const x = (i/(S.history.length-1))*w;
+      const y = h - (Math.max(0, Math.min(60, v))/60)*h;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+
+    // glow dots
+    ctx.fillStyle = 'rgba(181,146,42,0.55)';
+    const last = S.history[S.history.length-1];
+    const lx = w;
+    const ly = h - (Math.max(0, Math.min(60, last))/60)*h;
+    ctx.beginPath(); ctx.arc(lx, ly, 3.5, 0, Math.PI*2); ctx.fill();
+  }
+
+  function tick(now){
+    // smooth moisture
+    const rate = S.mode === 'drought' ? 0.018 : (S.mode === 'rain' ? 0.014 : 0.01);
+    S.moisture += (S.target - S.moisture) * rate;
+
+    // if drought, trend keeps slipping unless "irrigation" is active (simulate partial recovery)
+    if(S.mode === 'drought'){
+      const irrig = 6.5; // irrigation gain
+      S.moisture += (S.moisture < 22 ? 0.008*irrig : 0.0015*irrig);
+    }
+
+    const shown = Math.max(5, Math.min(55, S.moisture));
+    moistEl.textContent = shown.toFixed(0);
+
+    // push history
+    if(now - S.lastPush > 180){
+      S.lastPush = now;
+      S.history.shift();
+      const jitter = (Math.random()-0.5) * (S.mode === 'drought' ? 1.4 : 1.0);
+      S.history.push(shown + jitter);
+    }
+
+    drawChart();
+    requestAnimationFrame(tick);
+  }
+
+  setMode('sunny');
+  requestAnimationFrame(tick);
+})();
+
+// ─────────────────────────────────────────────────────────
+//  2) DRILL-DOWN 3D HARDWARE MODEL (Three.js)
+// ─────────────────────────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('hwCanvas');
+  const viewportEl = document.getElementById('hwViewport');
+  if(!canvas || !viewportEl) return;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x07080f, 1);
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x07080f, 0.35);
+
+  const camera = new THREE.PerspectiveCamera(44, 1, 0.01, 60);
+  camera.position.set(1.6, 1.15, 1.6);
+
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.07;
+  controls.minDistance = 0.7;
+  controls.maxDistance = 5.5;
+  controls.maxPolarAngle = Math.PI*0.62;
+
+  function resize(){
+    const w = Math.max(1, viewportEl.clientWidth);
+    const h = Math.max(1, viewportEl.clientHeight);
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Lights
+  scene.add(new THREE.AmbientLight(0x0a1828, 3.3));
+  const sun = new THREE.DirectionalLight(0xfff2cc, 1.2);
+  sun.position.set(3, 5, 4);
+  scene.add(sun);
+  const goldPoint = new THREE.PointLight(0xd4a93a, 3.0, 8);
+  goldPoint.position.set(0, 1.7, 0);
+  scene.add(goldPoint);
+  const warmPoint = new THREE.PointLight(0xffb74d, 1.0, 6);
+  warmPoint.position.set(1.2, 0.4, 1.1);
+  scene.add(warmPoint);
+
+  // Materials
+  const matBody = new THREE.MeshPhysicalMaterial({
+    color: 0x1a1b24,
+    roughness: 0.35,
+    metalness: 0.35,
+    clearcoat: 0.15,
+    transparent: true,
+    opacity: 0.98,
+  });
+  const matAcc = new THREE.MeshPhysicalMaterial({
+    color: 0xb5922a,
+    roughness: 0.35,
+    metalness: 0.55,
+    emissive: 0x2b1f06,
+    emissiveIntensity: 0.7,
+  });
+  const matProbe = new THREE.MeshPhysicalMaterial({
+    color: 0x2b2c36,
+    roughness: 0.25,
+    metalness: 0.55,
+    emissive: 0x080808,
+    emissiveIntensity: 0.2,
+  });
+  const matSolar = new THREE.MeshPhysicalMaterial({
+    color: 0x141820,
+    roughness: 0.22,
+    metalness: 0.25,
+    emissive: 0x0b0b1a,
+    emissiveIntensity: 0.5,
+  });
+
+  // Group
+  const root = new THREE.Group();
+  scene.add(root);
+
+  // Body
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.35, 0.62), matBody);
+  body.position.set(0, 0.55, 0);
+  body.userData = { part: 'Body / Enclosure', desc: 'Sealed enclosure for rugged field deployments; protects electronics from dust and moisture.' };
+  root.add(body);
+
+  // ESP32 module
+  const esp = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.10, 0.28), matAcc);
+  esp.position.set(-0.12, 0.72, 0.0);
+  esp.userData = { part: 'ESP32 (Edge Compute)', desc: 'Low-power firmware: smoothing, thresholds, trigger rules, and packet scheduling.' };
+  root.add(esp);
+
+  // LoRa module
+  const lora = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.12, 0.26), matAcc);
+  lora.position.set(0.38, 0.70, -0.12);
+  lora.userData = { part: 'LoRa Module', desc: 'Long-range telemetry for low-connectivity areas; efficient packets for battery life.' };
+  root.add(lora);
+
+  // Solar panel
+  const solar = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.05, 0.48), matSolar);
+  solar.position.set(0, 0.82, 0);
+  solar.userData = { part: 'Solar Panel', desc: 'Trickle-charge + battery buffer: minimal maintenance and always-on monitoring.' };
+  root.add(solar);
+
+  // Probe
+  const probe = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1.08, 18), matProbe);
+  probe.position.set(-0.22, -0.05, 0.0);
+  probe.rotateZ(Math.PI/16);
+  probe.userData = { part: 'Capacitive Moisture Probe', desc: 'Corrosion-resistant capacitive sensing for long-term soil deployment (no exposed electrodes).' };
+  root.add(probe);
+
+  // Probe tip
+  const tip = new THREE.Mesh(new THREE.ConeGeometry(0.07, 0.18, 18), matAcc);
+  tip.position.set(-0.28, -0.62, 0.0);
+  tip.rotateZ(Math.PI/16);
+  tip.userData = { part: 'Probe Tip', desc: 'Optimized geometry for consistent contact and stable readings across soil textures.' };
+  root.add(tip);
+
+  // Ground ring
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.012, 10, 36), matAcc);
+  ring.position.set(0, 0.46, 0);
+  ring.rotateX(Math.PI/2);
+  ring.userData = { part: 'Service Ring', desc: 'Quick access for maintenance: sealed ports, gaskets, and field-serviceability.' };
+  root.add(ring);
+
+  // Floor grid
+  const gMat = new THREE.LineBasicMaterial({ color: 0x1a160b, transparent: true, opacity: 0.55 });
+  const SIZE = 4, STEP = 0.25;
+  for(let i=-SIZE;i<=SIZE;i+=STEP){
+    const pts1=[new THREE.Vector3(i,-0.86,-SIZE), new THREE.Vector3(i,-0.86,SIZE)];
+    const pts2=[new THREE.Vector3(-SIZE,-0.86,i), new THREE.Vector3(SIZE,-0.86,i)];
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts1), gMat));
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts2), gMat));
+  }
+
+  // Tooltip
+  const tipEl = document.getElementById('hwTip');
+  const tipT = document.getElementById('hwTipT');
+  const tipB = document.getElementById('hwTipB');
+  let hovered = null;
+
+  const ray = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  const pickables = [probe, solar, lora, esp, body, ring, tip];
+
+  function setHover(obj){
+    if(hovered === obj) return;
+    if(hovered){ hovered.scale.setScalar(1); }
+    hovered = obj;
+    if(hovered){ hovered.scale.setScalar(1.04); }
+  }
+
+  function onPointerMove(e){
+    const r = viewportEl.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    mouse.x = (x / r.width) * 2 - 1;
+    mouse.y = -(y / r.height) * 2 + 1;
+
+    ray.setFromCamera(mouse, camera);
+    const hits = ray.intersectObjects(pickables, false);
+
+    if(hits.length){
+      const obj = hits[0].object;
+      setHover(obj);
+
+      const pad = 14;
+      const left = Math.min(r.width - 290, Math.max(pad, x + 14));
+      const top = Math.min(r.height - 130, Math.max(pad, y + 14));
+      tipEl.style.transform = `translate(${left}px, ${top}px)`;
+      tipT.textContent = obj.userData.part || 'Component';
+      tipB.textContent = obj.userData.desc || '';
+      tipEl.classList.add('show');
+    } else {
+      setHover(null);
+      tipEl.classList.remove('show');
+    }
+  }
+
+  function onPointerLeave(){
+    setHover(null);
+    tipEl.classList.remove('show');
+  }
+
+  viewportEl.addEventListener('pointermove', onPointerMove);
+  viewportEl.addEventListener('pointerleave', onPointerLeave);
+
+  // Scroll-driven highlight (lightweight): when the 3D section is centered, cycle parts
+  let cycleT = 0;
+  const io = new IntersectionObserver((entries) => {
+    const on = entries.some(e => e.isIntersecting);
+    if(!on){ setHover(null); }
+  }, { threshold: 0.55 });
+  io.observe(viewportEl);
+
+  let last = 0;
+  function animate(ts){
+    requestAnimationFrame(animate);
+    const dt = Math.min((ts-last)/1000, 0.05);
+    last = ts;
+    const t = ts/1000;
+
+    // idle motion
+    root.rotation.y = Math.sin(t*0.45) * 0.22;
+    root.rotation.x = Math.sin(t*0.32) * 0.06;
+    goldPoint.intensity = 2.8 + Math.abs(Math.sin(t*1.4))*0.6;
+
+    // subtle cycle if user isn't hovering
+    if(!hovered){
+      cycleT += dt;
+      if(cycleT > 2.8){
+        cycleT = 0;
+        const seq = [probe, solar, lora, esp];
+        const idx = Math.floor((t/2.8) % seq.length);
+        setHover(seq[idx]);
+        setTimeout(()=>{ if(!hovered) setHover(null); }, 1200);
+      }
+    }
+
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(animate);
+})();
+
+// ─────────────────────────────────────────────────────────
+//  3) ROI CALCULATOR
+// ─────────────────────────────────────────────────────────
+(function(){
+  const acreSlider = document.getElementById('acreSlider');
+  const acreVal = document.getElementById('acreVal');
+  const cropSel = document.getElementById('cropSel');
+  const waterSaved = document.getElementById('waterSaved');
+  const fertSaved = document.getElementById('fertSaved');
+  const waterNote = document.getElementById('waterNote');
+  const fertNote = document.getElementById('fertNote');
+
+  if(!acreSlider || !cropSel) return;
+
+  // Baselines are deliberately conservative for a portfolio demo.
+  // Units: liters/acre/season, kg/acre/season.
+  const crops = {
+    wheat: { water: 420000, fert: 65, saveW: 0.18, saveF: 0.12 },
+    rice: { water: 920000, fert: 85, saveW: 0.22, saveF: 0.10 },
+    cotton: { water: 560000, fert: 72, saveW: 0.20, saveF: 0.14 },
+    vegetables: { water: 380000, fert: 58, saveW: 0.16, saveF: 0.15 },
+  };
+
+  function fmt(n){
+    return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function recalc(){
+    const acres = parseInt(acreSlider.value, 10);
+    const crop = crops[cropSel.value];
+
+    acreVal.textContent = acres;
+
+    const w = acres * crop.water * crop.saveW;
+    const f = acres * crop.fert * crop.saveF;
+
+    waterSaved.textContent = fmt(w);
+    fertSaved.textContent = fmt(f);
+
+    waterNote.textContent = `~${Math.round(crop.saveW*100)}% reduction via triggers + weather-aware scheduling`;
+    fertNote.textContent = `~${Math.round(crop.saveF*100)}% reduction via localized application`;
+  }
+
+  acreSlider.addEventListener('input', recalc);
+  cropSel.addEventListener('change', recalc);
+  recalc();
+})();
+
+// ─────────────────────────────────────────────────────────
+//  4) INTERACTIVE TECH STACK MAP
+// ─────────────────────────────────────────────────────────
+(function(){
+  const svg = document.getElementById('stackSvg');
+  if(!svg) return;
+
+  const lines = {
+    l1: svg.querySelector('#l1'),
+    l2: svg.querySelector('#l2'),
+    l3: svg.querySelector('#l3'),
+    l4: svg.querySelector('#l4'),
+    l5: svg.querySelector('#l5'),
+  };
+
+  const nodes = Array.from(svg.querySelectorAll('.stack-node'));
+
+  const flow = {
+    sensor: ['l1','l2','l3','l4','l5'],
+    mcu: ['l2','l3','l4','l5'],
+    radio: ['l3','l4','l5'],
+    cloud: ['l4','l5'],
+    app: ['l4'],
+    actions: ['l5'],
+  };
+
+  function clear(){
+    Object.values(lines).forEach(l => l.classList.remove('active'));
+    nodes.forEach(n => n.querySelector('rect').classList.remove('active'));
+  }
+
+  nodes.forEach(n => {
+    const id = n.dataset.node;
+    n.style.cursor = 'pointer';
+    n.addEventListener('mouseenter', () => {
+      clear();
+      n.querySelector('rect').classList.add('active');
+      (flow[id] || []).forEach(k => lines[k]?.classList.add('active'));
+    });
+    n.addEventListener('mouseleave', clear);
+  });
+})();
+
+// ─────────────────────────────────────────────────────────
+//  5) CHALLENGE & PIVOT TIMELINE
+// ─────────────────────────────────────────────────────────
+(function(){
+  const btns = Array.from(document.querySelectorAll('.tl-btn'));
+  const tlTag = document.getElementById('tlTag');
+  const tlTitle = document.getElementById('tlTitle');
+  const tlWrong = document.getElementById('tlWrong');
+  const tlPivot = document.getElementById('tlPivot');
+
+  const data = {
+    v1: {
+      tag: 'Prototype v1',
+      title: 'Corrosion + Drift',
+      wrong: 'Early probes showed drift over time due to soil chemistry + electrode oxidation, causing unstable moisture readings and false triggers.',
+      pivot: 'Switched to capacitive sensing, improved sealing and conformal coating, and added calibration smoothing in firmware.'
+    },
+    v2: {
+      tag: 'Prototype v2',
+      title: 'Power Budget',
+      wrong: 'Solar sizing + sleep strategy were naive; night-time sampling drained the battery and caused data gaps.',
+      pivot: 'Added duty-cycling, packet batching, and adaptive sampling rates based on variance and weather context.'
+    },
+    v3: {
+      tag: 'Prototype v3',
+      title: 'Connectivity',
+      wrong: 'Wi‑Fi-only sync failed on rural farms; upload retries wasted power and created stale dashboards.',
+      pivot: 'Moved to LoRa-first design and cloud ingestion with resilient buffering and reconciliation.'
+    },
+    v4: {
+      tag: 'Prototype v4',
+      title: 'Signal → Action',
+      wrong: 'Data was readable, but not actionable—farmers need a clear “what now?” not raw charts.',
+      pivot: 'Implemented rule-based triggers + alerts and structured UI around actions (irrigate, pause, inspect, recommend).'
+    }
+  };
+
+  function set(step){
+    const d = data[step];
+    if(!d) return;
+    btns.forEach(b => {
+      const on = b.dataset.step === step;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    tlTag.textContent = d.tag;
+    tlTitle.textContent = d.title;
+    tlWrong.textContent = d.wrong;
+    tlPivot.textContent = d.pivot;
+  }
+
+  btns.forEach(b => b.addEventListener('click', () => set(b.dataset.step)));
+  set('v1');
+})();
+</script>
+</body>
+</html>

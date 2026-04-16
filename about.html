@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About Me — Rudrabha Dasgupta</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#b5922a;
+  --gold2:#d4a93a;
+  --white:#f0ece4;
+  --dim:#6b6560;
+  --bg:#0a0905;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 40px;
+  background:linear-gradient(180deg,rgba(10,9,5,.95) 0%,transparent 100%);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;letter-spacing:1px;color:var(--white);text-transform:uppercase}
+.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:16px}
+.nav-grid span{width:7px;height:7px;background:var(--white);display:block}
+.nav-links{display:flex;gap:28px;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{font-size:12px;font-weight:500;letter-spacing:1.5px;color:var(--white);text-decoration:none;text-transform:uppercase;opacity:.85;transition:opacity .2s}
+.nav-links a:hover{opacity:1}
+
+#top-wave{position:fixed;top:0;left:0;right:0;height:170px;z-index:90;pointer-events:none;opacity:.22}
+
+#hero{min-height:100vh;display:grid;grid-template-columns:1.1fr 0.9fr;gap:42px;align-items:center;padding:140px 60px 80px 60px;position:relative;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;z-index:0;opacity:.26}
+.hero-left,.hero-right{position:relative;z-index:2}
+
+.hero-label{font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-label::before{content:'';width:30px;height:1px;background:var(--gold)}
+
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,9vw,140px);line-height:.92;color:var(--white);letter-spacing:1px;margin-bottom:18px}
+h1 em{color:var(--gold);font-style:normal}
+
+.sub{font-size:16px;line-height:1.7;color:var(--dim);max-width:620px;font-weight:300}
+
+.card{
+  border-radius:18px;overflow:hidden;
+  border:1px solid rgba(181,146,42,.22);
+  background:rgba(7,8,15,.92);
+  box-shadow:0 18px 60px rgba(0,0,0,0.45);
+}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(10,9,5,.70)}
+.card-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,236,228,.55)}
+.card-badge{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);border:1px solid rgba(181,146,42,.25);padding:4px 10px;border-radius:999px}
+.card-body{padding:16px}
+
+.portrait{
+  width:100%;
+  aspect-ratio: 4 / 5;
+  border-radius:16px;
+  object-fit:cover;
+  border:1px solid rgba(181,146,42,.18);
+  background:radial-gradient(900px 520px at 20% 20%, rgba(181,146,42,0.14), transparent 70%), rgba(255,255,255,0.02);
+}
+.fallback{
+  width:100%;
+  aspect-ratio: 4 / 5;
+  border-radius:16px;
+  border:1px solid rgba(181,146,42,.18);
+  background:radial-gradient(900px 520px at 20% 20%, rgba(181,146,42,0.14), transparent 70%), rgba(255,255,255,0.02);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:16px;
+  color:rgba(240,236,228,.70);
+}
+.fallback strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;color:var(--white);margin-bottom:10px}
+
+.section{padding:110px 60px;max-width:1200px;margin:0 auto}
+.section-num{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-num::before{content:'';width:30px;height:1px;background:var(--gold)}
+
+h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,6vw,84px);line-height:.95;color:var(--white);letter-spacing:.5px;margin-bottom:24px}
+
+.copy{font-size:15px;line-height:1.8;color:rgba(240,236,228,.72);font-weight:300;max-width:980px}
+.copy strong{color:var(--gold2);font-weight:500}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px}
+.block{background:rgba(10,9,5,.72);border:1px solid rgba(181,146,42,.14);border-radius:18px;padding:16px}
+.block .t{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,236,228,.45);margin-bottom:8px}
+.block .b{font-size:14px;line-height:1.75;color:rgba(240,236,228,.80)}
+
+ul{padding-left:18px}
+li{margin:10px 0;color:rgba(240,236,228,.78);line-height:1.7;font-weight:300}
+
+footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex;justify-content:space-between;align-items:center}
+.footer-text{font-size:12px;color:var(--dim);letter-spacing:.5px}
+.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--white);letter-spacing:3px}
+
+@media (max-width: 1060px){
+  nav{padding:18px 20px}
+  .nav-links{gap:18px}
+  #hero{grid-template-columns:1fr;padding:130px 20px 80px 20px}
+  .section{padding:90px 20px}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-grid"><span></span><span></span><span></span><span></span></div>
+    Rudrabha Dasgupta | Innovator
+  </div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#build">Build</a>
+    <a href="#lead">Lead</a>
+    <a href="./index.html">Back</a>
+  </div>
+</nav>
+
+<canvas id="top-wave" aria-hidden="true"></canvas>
+
+<section id="about" aria-label="About Me" style="position:relative">
+  <div id="hero">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+    <div class="hero-left">
+      <div class="hero-label">About Me</div>
+      <h1>Rudrabha <em>Dasgupta</em></h1>
+      <p class="sub">Biotechnologist | Hardware Innovator | Entrepreneur</p>
+      <div style="height:18px"></div>
+      <p class="sub">
+        I am a builder at the intersection of biological sciences, hardware engineering, and business strategy. Currently in my second year (fourth semester) pursuing a B.Tech in Biotechnology at Vellore Institute of Technology (VIT), I am driven by a singular focus: translating complex scientific concepts into scalable, real-world technologies that improve human health and operational efficiency.
+      </p>
+      <div style="height:14px"></div>
+      <p class="sub">
+        Whether I am prototyping a soft-robotic assistive device, scaling an event management startup, or modeling biological flux, I approach every challenge with a mindset rooted in research-backed innovation and biomimicry.
+      </p>
+    </div>
+
+    <div class="hero-right">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Portrait</div>
+          <div class="card-badge">rudrabha.jpeg</div>
+        </div>
+        <div class="card-body">
+          <img
+            src="/rudrabha.jpeg"
+            alt="Portrait of Rudrabha Dasgupta"
+            class="portrait"
+            onerror="this.style.display='none'; document.getElementById('portrait-fallback').style.display='flex';"
+          />
+          <div class="fallback" id="portrait-fallback">
+            <div>
+              <strong>RD</strong>
+              Add <span style="color:var(--gold2)">rudrabha.jpeg</span> to the <span style="color:var(--gold2)">public/</span> folder to display the photo.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="build" class="section" aria-label="Academic Foundation and Product Development">
+  <div class="section-num">01 — The Academic Foundation</div>
+  <h2>The Academic<br>Foundation</h2>
+  <div class="copy">
+    Maintaining an <strong>8.44 CGPA</strong>, my academic journey is an active synthesis of wet-lab biology and dry-lab computational power. My core coursework—spanning Biochemistry, Microbiology, Cell Biology, Analytical Techniques of Biotechnology (ATBT), and differential equations—provides the foundational science. Meanwhile, I am broadening my ecological understanding through an NPTEL course in wildlife.
+    <br /><br />
+    However, I don't confine my education to the laboratory. I actively merge biotechnology with computer science, utilizing tools like Flutter for user interfaces, Python for bioinformatics, and LSTM machine learning models for processing complex biological signals.
+  </div>
+
+  <div class="section-num" style="margin-top:42px">02 — Product Development & Engineering</div>
+  <h2>Product<br>Development &<br>Engineering</h2>
+  <div class="copy">
+    I thrive in high-pressure environments that demand rapid prototyping and hardware integration. I build physical, wearable, and tech-driven solutions designed for immediate impact.
+  </div>
+
+  <div class="grid">
+    <div class="block">
+      <div class="t">Wearables</div>
+      <div class="b">
+        <ul>
+          <li><strong>Armex:</strong> Currently developing a soft-robotic, non-invasive smart sleeve engineered to restrict tremors and stabilize forearms.</li>
+          <li><strong>GlucoPatch:</strong> Designed and pitched a sweat-based monitoring wearable, taking it to the finals of InnoYudh 2025 and securing 12th place globally at the VITB X Johns Hopkins University Health Hack.</li>
+          <li><strong>Lateral X:</strong> Engineered a hardware-based solution for balance correction.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="block">
+      <div class="t">Systems</div>
+      <div class="b">
+        <ul>
+          <li><strong>AgroSync:</strong> Developed a precision-farming IoT ecosystem, advancing as a Finalist in Ideahack1.0.</li>
+          <li><strong>SeismoSync:</strong> Conceptualized an earthquake-stabilized dialysis machine, competing as a participant in the national Smart India Hackathon (SIH).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="block" style="margin-top:22px">
+    <div class="t">Validation under pressure</div>
+    <div class="b">
+      My ability to execute under pressure was most recently validated by taking 1st Place at the Dr. Dev Hackathon (E-cell, SRM), alongside finalist finishes at Build-Up-Ideathon'25 (MSIT) and Zenith'25 (MLRIT).
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-label="Scientific Research and Synthetic Biology">
+  <div class="section-num">03 — Scientific Research & Synthetic Biology</div>
+  <h2>Scientific Research<br>& Synthetic Biology</h2>
+  <div class="copy">
+    Beyond hardware, I am deeply invested in genetic pathways and therapeutic targeting. As a Researcher for Project iDEA 2025 (AstraZeneca), I conducted specialized research into rare diseases, specifically focusing on Paroxysmal Nocturnal Hemoglobinuria (PNH), Neurofibromatosis type 1 (NF1), and Atypical Hemolytic Uremic Syndrome (aHUS).
+    <br /><br />
+    Currently, I am actively bridging my wet-lab and dry-lab expertise in preparation for the upcoming iGEM 2026 competition, focusing on novel synthetic biology solutions.
+  </div>
+</section>
+
+<section id="lead" class="section" aria-label="Leadership, Business and Marketing">
+  <div class="section-num">04 — Leadership, Business & Marketing</div>
+  <h2>Leadership,<br>Business &<br>Marketing</h2>
+  <div class="copy">
+    A great product only matters if it reaches the people who need it. I balance my technical builds with strong leadership and marketing acumen.
+  </div>
+
+  <div class="grid">
+    <div class="block">
+      <div class="t">Campus leadership</div>
+      <div class="b">
+        <strong>Vice Chairperson, Society for Biological Engineering (SBE) at VIT:</strong> Leading a community of engineers, organizing initiatives, and fostering a culture of bio-innovation on campus.
+      </div>
+    </div>
+    <div class="block">
+      <div class="t">Entrepreneurship</div>
+      <div class="b">
+        <strong>Founder & Lead, Event Sutra:</strong> Successfully built and manage a profitable startup focused on end-to-end event management, logistics, and securing corporate sponsorships.
+      </div>
+    </div>
+    <div class="block">
+      <div class="t">Marketing</div>
+      <div class="b">
+        <strong>Influencer Marketing Intern, Marketing Geeks:</strong> Honed my digital growth strategies, mastering off-page SEO, link-building architecture, and high-level digital networking.
+      </div>
+    </div>
+    <div class="block">
+      <div class="t">Ecosystem behind the drive</div>
+      <div class="b">
+        Innovation doesn't happen in a vacuum. My approach to problem-solving requires both rigorous logic and creative intuition, driven by a deep respect for the craft of engineering and science.
+        <br /><br />
+        Today, that drive is sustained by an incredible ecosystem of people. From collaborating on complex technical reports and late-night hackathon builds with a dedicated core group of peers, to the unwavering support and inspiration of my significant other, I am privileged to be surrounded by individuals who constantly push me to build better, think bigger, and execute flawlessly.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-text">About Me · 2026</span>
+  <span class="footer-brand">Rudrabha Dasgupta</span>
+</footer>
+
+<script>
+// hero mesh wave (same visual language)
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+  const COLS = 40, ROWS = 18;
+
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t += 0.008;
+
+    const pts = [];
+    for(let r=0;r<=ROWS;r++){
+      pts[r]=[];
+      for(let c=0;c<=COLS;c++){
+        const nx = c/COLS, ny = r/ROWS;
+        const wave1 = Math.sin(nx*6 - t*1.8 + ny*2) * 0.08;
+        const wave2 = Math.sin(nx*3 + t*1.2 - ny*3) * 0.06;
+        const wave3 = Math.cos(nx*8 - t*2.5 + ny*1) * 0.04;
+        const dy = (wave1+wave2+wave3) * H;
+        pts[r][c] = { x: nx*W, y: H*0.52 + dy - (1-ny)*H*0.25 };
+      }
+    }
+
+    for(let r=0;r<=ROWS;r++){
+      const rowAlpha = 0.04 + (r/ROWS)*0.18;
+      ctx.beginPath();
+      for(let c=0;c<=COLS;c++){
+        const p=pts[r][c];
+        c===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+      }
+      ctx.strokeStyle=`rgba(181,146,42,${rowAlpha})`;
+      ctx.lineWidth=0.7;
+      ctx.stroke();
+    }
+
+    for(let c=0;c<=COLS;c++){
+      const colAlpha = 0.03 + Math.sin(c/COLS*Math.PI)*0.12;
+      ctx.beginPath();
+      for(let r=0;r<=ROWS;r++){
+        const p=pts[r][c];
+        r===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+      }
+      ctx.strokeStyle=`rgba(181,146,42,${colAlpha})`;
+      ctx.lineWidth=0.6;
+      ctx.stroke();
+    }
+
+    const grd=ctx.createRadialGradient(W*0.75,H*0.38,0,W*0.75,H*0.38,W*0.4);
+    grd.addColorStop(0,'rgba(181,146,42,0.04)');
+    grd.addColorStop(1,'transparent');
+    ctx.fillStyle=grd;
+    ctx.fillRect(0,0,W,H);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// top wave
+(function(){
+  const canvas = document.getElementById('top-wave');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+  const COLS = 46, ROWS = 10;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = Math.max(120, canvas.offsetHeight || 170);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t += 0.008;
+
+    const pts=[];
+    for(let r=0;r<=ROWS;r++){
+      pts[r]=[];
+      for(let c=0;c<=COLS;c++){
+        const nx=c/COLS, ny=r/ROWS;
+        const wave1=Math.sin(nx*6 - t*1.6 + ny*2.2) * 0.10;
+        const wave2=Math.cos(nx*3 + t*1.1 - ny*2.6) * 0.06;
+        const dy=(wave1+wave2) * H;
+        pts[r][c]={x:nx*W,y:H*0.68 + dy - (1-ny)*H*0.55};
+      }
+    }
+
+    for(let r=0;r<=ROWS;r++){
+      const rowAlpha = 0.016 + (r/ROWS)*0.06;
+      ctx.beginPath();
+      for(let c=0;c<=COLS;c++){
+        const p=pts[r][c];
+        c===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+      }
+      ctx.strokeStyle=`rgba(181,146,42,${rowAlpha})`;
+      ctx.lineWidth=0.75;
+      ctx.stroke();
+    }
+
+    for(let c=0;c<=COLS;c++){
+      const colAlpha = 0.012 + Math.sin(c/COLS*Math.PI)*0.04;
+      ctx.beginPath();
+      for(let r=0;r<=ROWS;r++){
+        const p=pts[r][c];
+        r===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+      }
+      ctx.strokeStyle=`rgba(181,146,42,${colAlpha})`;
+      ctx.lineWidth=0.65;
+      ctx.stroke();
+    }
+
+    const grd=ctx.createRadialGradient(W*0.22,H*0.55,0,W*0.22,H*0.55,W*0.55);
+    grd.addColorStop(0,'rgba(181,146,42,0.030)');
+    grd.addColorStop(1,'transparent');
+    ctx.fillStyle=grd;
+    ctx.fillRect(0,0,W,H);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
