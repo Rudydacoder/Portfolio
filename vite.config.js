@@ -151,6 +151,8 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), localChatApiPlugin],
     build: {
+      // This only controls when Vite prints a warning; it doesn't change output.
+      chunkSizeWarningLimit: 1600,
       rollupOptions: {
         input: {
           main: resolve(process.cwd(), "index.html"),
