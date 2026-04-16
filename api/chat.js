@@ -117,7 +117,7 @@ function sanitizeMessages(messages) {
   return cleaned.slice(-24);
 }
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   const cors = corsHeaders(req);
 
   if (req.method === "OPTIONS") {
@@ -232,4 +232,4 @@ export default async function handler(req, res) {
   } finally {
     clearTimeout(timeout);
   }
-}
+};
