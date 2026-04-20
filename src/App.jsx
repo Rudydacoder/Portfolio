@@ -168,6 +168,15 @@ export default function App() {
     return fromOk && subjectOk && bodyOk && emailJsReady && !isSending;
   }, [composeDraft.body, composeDraft.fromEmail, composeDraft.subject, emailJsReady, isSending]);
 
+  useEffect(() => {
+    if (!showPreloader) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showPreloader]);
+
   const sendDirectEmail = async () => {
     if (!emailJsReady) {
       setComposeStatus({ type: "error", message: "Email is not configured yet. Set VITE_EMAILJS_* env vars." });
@@ -354,21 +363,26 @@ export default function App() {
           <motion.div
             key="preloader"
             id="preloader"
-            className="fixed inset-0 z-[999] bg-[#0B0D1A] flex items-center justify-center pointer-events-none"
+            className="fixed inset-0 z-[999] bg-background-dark flex items-center justify-center"
             exit={{ y: "-100%" }}
             transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
           >
-            <div className="overflow-hidden">
-              <motion.span
-                id="preloader-text"
-                className="text-[#C9A84C] text-sm tracking-[0.3em] uppercase font-display inline-block"
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                exit={{ y: "-100%" }}
-                transition={{ duration: 0.7 }}
-              >
-                Rudrabha Dasgupta
-              </motion.span>
+            <div className="preloader-stack">
+              <div className="overflow-hidden">
+                <motion.span
+                  id="preloader-text"
+                  className="text-accent text-sm tracking-[0.3em] uppercase font-display inline-block"
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "-100%" }}
+                  transition={{ duration: 0.7 }}
+                >
+                  Rudrabha Dasgupta
+                </motion.span>
+              </div>
+              <div className="preloader-bar" aria-hidden="true">
+                <span className="preloader-bar__fill" />
+              </div>
             </div>
           </motion.div>
         ) : null}
