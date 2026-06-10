@@ -5,3 +5,6 @@ dist/
 # local env vars / secrets
 .env
 .env.*
+
+# local Claude tooling
+.claude/

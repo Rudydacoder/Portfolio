@@ -97,15 +97,15 @@ function WaveMesh() {
   return (
     <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[200, 200, 120, 120]} />
-      <meshBasicMaterial color="#C9A84C" wireframe transparent opacity={0.12} />
+      <meshBasicMaterial color="#2B3FF2" wireframe transparent opacity={0.045} />
     </mesh>
   );
 }
 
 export default function SignalWaveBackground() {
   return (
-    <div className="fixed inset-0 z-[-1] bg-[#0A0A0A] pointer-events-none">
-      <Canvas camera={{ position: [0, 5, 15], fov: 60 }} dpr={[1, 1.6]}>
+    <div className="fixed inset-0 z-[-1] pointer-events-none" style={{ background: "#F5F1E6" }}>
+      <Canvas camera={{ position: [0, 5, 15], fov: 60 }} dpr={[1, 1.6]} gl={{ alpha: true }}>
         <WaveMesh />
       </Canvas>
     </div>

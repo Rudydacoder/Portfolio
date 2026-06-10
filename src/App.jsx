@@ -10,6 +10,7 @@ const interactiveCursorSelector = "h1, h2, h3, h4, button, a, .project-card, .cu
 const projects = [
   {
     id: "card-lateralx",
+    index: "01",
     colClass: "lg:col-span-3",
     image: "/LateralX.png",
     imageAlt: "High-fidelity 3D render of a futuristic wearable medical band sensor on a dark background",
@@ -17,10 +18,12 @@ const projects = [
     title: "Lateral X",
     badge: "1st Place - Dr. Dev Hackathon",
     description: "Advanced wearable balance correction system designed for post-stroke rehabilitation and active stabilization.",
-    xray: "CALIBRATING GYROSCOPE... | NEURAL INHIBITION: DETECTED | STABILIZATION ALGORITHM: DEPLOYED..."
+    xray: "CALIBRATING GYROSCOPE... | NEURAL INHIBITION: DETECTED | STABILIZATION ALGORITHM: DEPLOYED...",
+    href: "./lateral-x-showcase.html"
   },
   {
     id: "card-glucopatch",
+    index: "02",
     colClass: "lg:col-span-2",
     image: "/glucopatch-bg.png",
     imageAlt: "Clean mockup of a modern mobile app dashboard next to a small biometric sensor",
@@ -28,10 +31,12 @@ const projects = [
     title: "GlucoPatch Ecosystem",
     badge: "12th Place - Health Hack",
     description: "Non-invasive continuous glucose monitoring platform connecting patient sensors to clinical dashboards.",
-    xray: "CONNECTING SENSOR... | BLOOD GLUCOSE: 105 MG/DL | TREND: STABLE | SYNCING DASHBOARD..."
+    xray: "CONNECTING SENSOR... | BLOOD GLUCOSE: 105 MG/DL | TREND: STABLE | SYNCING DASHBOARD...",
+    href: "./glucopatch_simulation.html"
   },
   {
     id: "card-armex",
+    index: "03",
     colClass: "lg:col-span-2",
     image: "/Armex.png",
     imageAlt: "Armex soft-robotic tremor-restricting smart sleeve",
@@ -39,10 +44,12 @@ const projects = [
     title: "Armex",
     badge: "Medicathon finalist",
     description: "Tremor restricting Smart sleeves.",
-    xray: "INITIALIZING STABILIZATION PROTOCOL... | WET LAB PARAMS: NORMAL | DRY LAB ALGORITHMS: ACTIVE..."
+    xray: "INITIALIZING STABILIZATION PROTOCOL... | WET LAB PARAMS: NORMAL | DRY LAB ALGORITHMS: ACTIVE...",
+    href: "./aura-sleeve.html"
   },
   {
     id: "card-agrosync",
+    index: "04",
     colClass: "lg:col-span-3",
     image: "/AgroSync.png",
     imageAlt: "AgroSync data-driven agricultural synchronization platform visualization",
@@ -50,7 +57,8 @@ const projects = [
     title: "AgroSync",
     badge: "Idea Hack 1.0 Winner",
     description: "Data-driven agricultural synchronization platform.",
-    xray: "ANALYZING SOIL MOISTURE... | SATELLITE IMAGERY: SYNCED | YIELD PREDICTION: OPTIMAL..."
+    xray: "ANALYZING SOIL MOISTURE... | SATELLITE IMAGERY: SYNCED | YIELD PREDICTION: OPTIMAL...",
+    href: "./agrosync.html"
   }
 ];
 
@@ -86,16 +94,18 @@ function Counter({ target, suffix = "", label }) {
 
   return (
     <motion.div
-      className="text-center"
+      className="text-center md:text-left"
       onViewportEnter={() => setInView(true)}
       viewport={{ once: true, amount: 0.7 }}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <span className="text-[#C9A84C] text-4xl md:text-5xl font-black">{value}</span>
-      <span className="text-[#C9A84C] text-4xl md:text-5xl font-black">{suffix}</span>
-      <p className="text-text-secondary text-sm mt-2 uppercase tracking-wider">{label}</p>
+      <div className="display-serif text-ink text-5xl md:text-7xl leading-none">
+        {value}
+        <span className="text-cobalt">{suffix}</span>
+      </div>
+      <p className="font-mono text-[11px] text-ink-soft mt-3 uppercase tracking-[0.22em]">{label}</p>
     </motion.div>
   );
 }
@@ -260,7 +270,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.add("dark");
     const enableCursor = !motionProfile.coarse && !motionProfile.reduced && !isTerminalOpen;
     document.body.classList.toggle("js-cursor-ready", enableCursor);
 
@@ -350,7 +359,7 @@ export default function App() {
     : {
         initial: { opacity: 0, y: 36 },
         whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, amount: 0.2 },
+        viewport: { once: true, amount: 0.06 },
         transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
       };
 
@@ -363,7 +372,7 @@ export default function App() {
           <motion.div
             key="preloader"
             id="preloader"
-            className="fixed inset-0 z-[999] bg-background-dark flex items-center justify-center"
+            className="fixed inset-0 z-[999] flex items-center justify-center"
             exit={{ y: "-100%" }}
             transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
           >
@@ -371,13 +380,13 @@ export default function App() {
               <div className="overflow-hidden">
                 <motion.span
                   id="preloader-text"
-                  className="text-accent text-sm tracking-[0.3em] uppercase font-display inline-block"
+                  className="inline-block"
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
                   exit={{ y: "-100%" }}
                   transition={{ duration: 0.7 }}
                 >
-                  Rudrabha Dasgupta
+                  Rudrabha <em>Dasgupta</em>
                 </motion.span>
               </div>
               <div className="preloader-bar" aria-hidden="true">
@@ -390,68 +399,66 @@ export default function App() {
 
       <motion.div
         id="scroll-progress"
-        className="fixed top-0 left-0 h-[2px] z-[999] pointer-events-none"
+        className="fixed top-0 left-0 h-[3px] z-[999] pointer-events-none"
         style={{
           width: `${scrollProgress}%`,
-          background: "linear-gradient(90deg, #C9A84C, #D4A853)",
-          boxShadow: "0 0 8px rgba(201,168,76,0.6)"
+          background: "linear-gradient(90deg, #2B3FF2, #FF4D21)"
         }}
       />
 
       {enableCursor ? (
         <motion.div
           id="trailing-image"
-          className="fixed top-0 left-0 w-48 h-32 rounded bg-white/5 backdrop-blur-md border border-white/20 pointer-events-none z-[110] overflow-hidden flex items-center justify-center"
+          className="fixed top-0 left-0 w-48 h-32 rounded-md bg-card border border-ink/80 pointer-events-none z-[110] overflow-hidden flex items-center justify-center shadow-[6px_6px_0_rgba(22,21,15,0.85)]"
           style={{ x: smoothTrailerX, y: smoothTrailerY }}
           animate={{
             xPercent: -50,
             yPercent: -50,
             opacity: trailer.visible ? 1 : 0,
-            scale: trailer.visible ? 1 : 0.7
+            scale: trailer.visible ? 1 : 0.7,
+            rotate: trailer.visible ? -2 : 0
           }}
           transition={{ type: "spring", stiffness: 220, damping: 30 }}
         >
           {trailer.image ? (
             <img src={trailer.image} alt={trailer.label} className="w-full h-full object-cover" />
           ) : (
-            <span className="text-white/60 text-xs font-mono">[ CAPABILITY VISUAL ]</span>
+            <span className="text-ink-soft text-xs font-mono">[ CAPABILITY VISUAL ]</span>
           )}
         </motion.div>
       ) : null}
 
       {enableCursor ? (
-        <>
-          <motion.div
-            id="custom-cursor"
-            className={`fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[120] ${cursorMode === "interactive" ? "bg-[#C9A84C]" : "bg-white"} mix-blend-difference`}
-            style={{
-              x: smoothCursorX,
-              y: smoothCursorY,
-              xPercent: -50,
-              yPercent: -50,
-              scaleX: cursorScaleX,
-              scaleY: cursorScaleY,
-              rotate: smoothCursorAngle
-            }}
-          />
-        </>
+        <motion.div
+          id="custom-cursor"
+          className={`fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[120] ${cursorMode === "interactive" ? "bg-cobalt/90" : "bg-ink"}`}
+          style={{
+            x: smoothCursorX,
+            y: smoothCursorY,
+            xPercent: -50,
+            yPercent: -50,
+            scaleX: cursorScaleX,
+            scaleY: cursorScaleY,
+            rotate: smoothCursorAngle
+          }}
+        />
       ) : null}
 
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10 py-6 mix-blend-difference text-white w-full max-w-[1920px] mx-auto"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-5 w-full max-w-[1920px] mx-auto mix-blend-difference text-white"
         initial={reduceMotion ? false : { y: -28, opacity: 0 }}
         animate={reduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[24px]">grid_view</span>
-          <span className="text-sm font-bold tracking-wider">RUDRABHA DASGUPTA | INNOVATOR</span>
+        <div className="flex items-center gap-3">
+          <span className="material-symbols-outlined text-[22px]">grid_view</span>
+          <span className="font-mono text-xs font-bold tracking-[0.18em]">RUDRABHA DASGUPTA | INNOVATOR</span>
         </div>
         <div className="hidden md:flex items-center gap-8">
           <div className="relative" ref={workMenuRef}>
             <button
               type="button"
-              className="inline-flex items-center gap-2 text-sm font-medium hover:text-[#C9A84C] transition-colors"
+              className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] hover:opacity-60 transition-opacity"
               aria-haspopup="menu"
               aria-expanded={isWorkMenuOpen}
               onClick={() => {
@@ -464,18 +471,18 @@ export default function App() {
 
             {isWorkMenuOpen ? (
               <div
-                className="mix-blend-normal absolute right-0 mt-3 w-80 rounded-xl border border-[#C9A84C]/25 bg-[#0B0D1A]/95 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.55)] overflow-hidden"
+                className="mix-blend-normal absolute right-0 mt-3 w-80 rounded-xl border border-ink bg-card shadow-[8px_8px_0_rgba(22,21,15,0.85)] overflow-hidden text-ink"
                 role="menu"
               >
-                <div className="px-4 py-3 border-b border-white/10">
-                  <p className="text-[10px] tracking-[0.22em] uppercase text-text-tertiary">Projects</p>
+                <div className="px-4 py-3 border-b border-ink/10">
+                  <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-ink-faint">Projects</p>
                 </div>
                 <div className="py-1">
                   {projects.map((project) => (
                     <button
                       key={`menu-${project.id}`}
                       type="button"
-                      className="w-full text-left px-4 py-3 hover:bg-[#C9A84C]/10 transition-colors"
+                      className="w-full text-left px-4 py-3 hover:bg-cobalt/10 transition-colors group"
                       role="menuitem"
                       onClick={() => {
                         scrollToSelectedWork();
@@ -483,23 +490,26 @@ export default function App() {
                         setIsWorkMenuOpen(false);
                       }}
                     >
-                      <div className="text-white text-sm font-semibold leading-tight">{project.title}</div>
-                      <div className="text-text-tertiary text-[11px] mt-1 uppercase tracking-wider">{project.tag}</div>
+                      <div className="flex items-baseline gap-3">
+                        <span className="font-mono text-[10px] text-cobalt">{project.index}</span>
+                        <span className="display-serif text-ink text-lg leading-tight group-hover:text-cobalt transition-colors">{project.title}</span>
+                      </div>
+                      <div className="font-mono text-[10px] mt-1 uppercase tracking-[0.18em] text-ink-faint pl-7">{project.tag}</div>
                     </button>
                   ))}
-                  <div className="h-px bg-white/10 my-1" />
-                  <div className="px-4 py-3 text-text-tertiary text-sm">More to be added</div>
+                  <div className="h-px bg-ink/10 my-1" />
+                  <div className="px-4 py-3 font-mono text-[11px] text-ink-faint">More to be added</div>
                 </div>
               </div>
             ) : null}
           </div>
 
-          <a className="text-sm font-medium hover:text-[#C9A84C] transition-colors" href="./about.html">ABOUT</a>
+          <a className="font-mono text-xs tracking-[0.14em] hover:opacity-60 transition-opacity" href="./about.html">ABOUT</a>
 
           <div className="relative" ref={contactMenuRef}>
             <button
               type="button"
-              className="inline-flex items-center gap-2 text-sm font-medium hover:text-[#C9A84C] transition-colors"
+              className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] hover:opacity-60 transition-opacity"
               aria-haspopup="menu"
               aria-expanded={isContactMenuOpen}
               onClick={() => {
@@ -512,30 +522,30 @@ export default function App() {
 
             {isContactMenuOpen ? (
               <div
-                className="mix-blend-normal absolute right-0 mt-3 w-80 rounded-xl border border-[#C9A84C]/25 bg-[#0B0D1A]/95 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.55)] overflow-hidden"
+                className="mix-blend-normal absolute right-0 mt-3 w-80 rounded-xl border border-ink bg-card shadow-[8px_8px_0_rgba(22,21,15,0.85)] overflow-hidden text-ink"
                 role="menu"
               >
-                <div className="px-4 py-3 border-b border-white/10">
-                  <p className="text-[10px] tracking-[0.22em] uppercase text-text-tertiary">Reach out</p>
+                <div className="px-4 py-3 border-b border-ink/10">
+                  <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-ink-faint">Reach out</p>
                 </div>
                 <div className="py-1">
                   <a
-                    className="block px-4 py-3 hover:bg-[#C9A84C]/10 transition-colors"
+                    className="block px-4 py-3 hover:bg-cobalt/10 transition-colors"
                     href={`mailto:${contactEmail}`}
                     role="menuitem"
                   >
-                    <div className="text-white text-sm font-semibold leading-tight">Email</div>
-                    <div className="text-text-tertiary text-[11px] mt-1">{contactEmail}</div>
+                    <div className="text-ink text-sm font-semibold leading-tight">Email</div>
+                    <div className="font-mono text-[11px] mt-1 text-ink-faint">{contactEmail}</div>
                   </a>
                   <a
-                    className="block px-4 py-3 hover:bg-[#C9A84C]/10 transition-colors"
+                    className="block px-4 py-3 hover:bg-cobalt/10 transition-colors"
                     href={linkedInUrl}
                     target="_blank"
                     rel="noreferrer"
                     role="menuitem"
                   >
-                    <div className="text-white text-sm font-semibold leading-tight">LinkedIn</div>
-                    <div className="text-text-tertiary text-[11px] mt-1">Open profile</div>
+                    <div className="text-ink text-sm font-semibold leading-tight">LinkedIn</div>
+                    <div className="font-mono text-[11px] mt-1 text-ink-faint">Open profile</div>
                   </a>
                 </div>
               </div>
@@ -546,44 +556,75 @@ export default function App() {
 
       <div className="relative z-10 main-content">
         <section className="relative min-h-screen w-full flex items-center overflow-hidden">
-          <div className="relative z-20 w-full max-w-[1920px] mx-auto px-6 md:pl-[12%] md:pr-10 grid grid-cols-1 md:grid-cols-12 h-full">
-            <div className="md:col-span-7 flex flex-col justify-center gap-12 pt-20 md:pt-0">
-              <div className="space-y-6">
+          <div className="relative z-20 w-full max-w-[1920px] mx-auto px-6 md:pl-[10%] md:pr-10 grid grid-cols-1 md:grid-cols-12 h-full">
+            <div className="md:col-span-9 flex flex-col justify-center gap-12 pt-24 md:pt-0">
+              <div className="space-y-8">
+                <motion.div
+                  className="micro-label"
+                  initial={reduceMotion ? false : { opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.7, delay: 0.1 }}
+                >
+                  Biotechnologist · Hardware Innovator · Entrepreneur
+                </motion.div>
                 <div className="overflow-hidden">
-                  <motion.h1 id="hero-headline" className="text-white text-5xl md:text-8xl lg:text-[130px] font-black leading-[0.9] tracking-[-0.04em]" initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.9 }}>
-                    Building systems that <span className="matter-glow">matter</span>.
+                  <motion.h1
+                    id="hero-headline"
+                    className="display-serif text-ink text-6xl md:text-8xl lg:text-[120px] leading-[0.95]"
+                    initial={{ y: 80, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.9 }}
+                  >
+                    Building systems<br />that <span className="matter-glow">matter</span>.
                   </motion.h1>
                 </div>
-                <motion.p className="text-text-secondary text-lg md:text-2xl font-normal leading-[1.6] max-w-2xl" initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.9, delay: 0.15 }}>
+                <motion.p
+                  className="text-ink-soft text-lg md:text-2xl font-normal leading-[1.6] max-w-2xl"
+                  initial={{ y: 24, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.15 }}
+                >
                   From wearable balance correction to non-invasive diagnostic ecosystems. I design, code, and consult on projects that bridge human need with flawless technical execution.
                 </motion.p>
               </div>
-              <motion.div className="flex items-center gap-6" initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.9, delay: 0.28 }}>
+              <motion.div
+                className="flex items-center gap-6"
+                initial={{ y: 24, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.9, delay: 0.28 }}
+              >
                 <button
                   type="button"
                   onClick={() => setIsTerminalOpen(true)}
-                  className="inline-flex items-center justify-center h-14 px-8 border border-[#C9A84C] text-white text-base font-bold tracking-wide hover:bg-[#C9A84C] hover:text-[#0B0D1A] transition-all duration-300 ease-in-out rounded-full animate-glow-pulse"
+                  className="btn-pill btn-pill--solid h-14 px-8 text-base animate-glow-pulse"
                 >
-                  Start a Conversation
+                  Know About Me <span className="material-symbols-outlined text-[20px]">arrow_outward</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={scrollToSelectedWork}
+                  className="font-mono text-xs tracking-[0.18em] uppercase text-ink-soft hover:text-cobalt transition-colors inline-flex items-center gap-2"
+                >
+                  See the work <span className="material-symbols-outlined text-[16px]">south</span>
                 </button>
               </motion.div>
             </div>
-            <div className="hidden md:block md:col-span-5" />
+            <div className="hidden md:block md:col-span-3" />
           </div>
         </section>
 
         <motion.div
-          className="relative w-full overflow-hidden py-10 bg-transparent border-y border-[#C9A84C]/10 z-10 flex items-center"
+          className="relative w-full overflow-hidden py-8 border-y border-ink/15 z-10 flex items-center bg-paper-deep/60"
           {...revealMotion}
         >
           <div id="marquee-container" className="whitespace-nowrap flex flex-nowrap items-center w-max marquee-track marquee-fade-edges">
-            <h2 className="marquee-text text-6xl md:text-8xl font-black uppercase tracking-widest mx-4 text-[#C9A84C]/[0.08]">BIOTECHNOLOGICAL ENGINEERING • HEALTHTECH INNOVATION • HARDWARE PROTOTYPING • </h2>
-            <h2 className="marquee-text text-6xl md:text-8xl font-black uppercase tracking-widest mx-4 text-[#C9A84C]/[0.08]">BIOTECHNOLOGICAL ENGINEERING • HEALTHTECH INNOVATION • HARDWARE PROTOTYPING • </h2>
+            <h2 className="marquee-text text-6xl md:text-8xl uppercase tracking-wide mx-4">Biotechnological Engineering <em>·</em> HealthTech Innovation <em>·</em> Hardware Prototyping <em>·</em>&nbsp;</h2>
+            <h2 className="marquee-text text-6xl md:text-8xl uppercase tracking-wide mx-4">Biotechnological Engineering <em>·</em> HealthTech Innovation <em>·</em> Hardware Prototyping <em>·</em>&nbsp;</h2>
           </div>
         </motion.div>
 
-        <motion.section className="relative w-full py-20 md:py-28 border-b border-[#C9A84C]/10 bg-surface-dark" {...revealMotion}>
-          <div className="w-full max-w-[1920px] mx-auto px-6 md:pl-[12%] md:pr-[12%]">
+        <motion.section className="relative w-full py-20 md:py-28 border-b border-ink/15 bg-paper/85" {...revealMotion}>
+          <div className="w-full max-w-[1920px] mx-auto px-6 md:pl-[10%] md:pr-[10%]">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
               <Counter target={4} suffix="+" label="Projects Built" />
               <Counter target={3} label="Hackathons Won" />
@@ -593,10 +634,14 @@ export default function App() {
           </div>
         </motion.section>
 
-        <motion.section id="selected-work" className="relative w-full bg-background-dark py-24 md:py-32" {...revealMotion}>
-          <div className="w-full max-w-[1920px] mx-auto px-6 md:pl-[12%] md:pr-[12%]">
-            <div className="mb-12">
-              <h3 className="text-text-tertiary text-base font-medium tracking-[0.2em] uppercase">Selected Work</h3>
+        <motion.section id="selected-work" className="relative w-full py-24 md:py-32 bg-paper/85" {...revealMotion}>
+          <div className="w-full max-w-[1920px] mx-auto px-6 md:pl-[10%] md:pr-[10%]">
+            <div className="mb-14 flex items-end justify-between flex-wrap gap-4">
+              <div>
+                <div className="micro-label mb-4">Index of work</div>
+                <h3 className="display-serif text-ink text-5xl md:text-7xl leading-none">Selected <em>Work</em></h3>
+              </div>
+              <p className="font-mono text-[11px] text-ink-faint uppercase tracking-[0.2em]">2024 — 2026 · Four systems</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
               {projects.map((project) => (
@@ -613,74 +658,52 @@ export default function App() {
                     event.currentTarget.style.setProperty("--mx", `${mx}%`);
                     event.currentTarget.style.setProperty("--my", `${my}%`);
                   }}
-                  whileHover={reduceMotion ? { scale: 1.003 } : { y: -4, scale: 1.008 }}
-                  className={`project-card ${project.colClass} group relative flex flex-col justify-between bg-surface-dark border border-border-dark p-8 md:p-12 min-h-[500px] md:min-h-[600px] hover:border-[#C9A84C]/50 transition-colors duration-500 rounded cursor-pointer`}
+                  whileHover={reduceMotion ? { scale: 1.003 } : { y: -6, scale: 1.005 }}
+                  className={`project-card ${project.colClass} group relative flex flex-col justify-between p-8 md:p-12 min-h-[500px] md:min-h-[600px] rounded-lg cursor-pointer overflow-hidden`}
                 >
-                  <motion.div layoutId={`image-${project.id}`} className="absolute inset-0 overflow-hidden rounded group-hover:opacity-100 transition-opacity duration-700">
-                    <img alt={project.imageAlt} className="w-full h-full object-cover grayscale opacity-20 group-hover:grayscale-0 group-hover:opacity-40 transition-all duration-700" src={project.image} />
+                  <motion.div layoutId={`image-${project.id}`} className="absolute inset-0 overflow-hidden rounded-lg">
+                    <img
+                      alt={project.imageAlt}
+                      className="w-full h-full object-cover grayscale opacity-30 group-hover:grayscale-0 group-hover:opacity-60 group-hover:scale-[1.03] transition-all duration-700"
+                      src={project.image}
+                    />
                   </motion.div>
-                  <div className="x-ray-data absolute inset-0 z-0 p-8 opacity-0 pointer-events-none font-display text-[10px] text-[#C9A84C]/50 uppercase tracking-widest leading-relaxed flex items-end">
+                  <div className="x-ray-data absolute inset-0 z-0 p-8 opacity-0 pointer-events-none font-mono text-[10px] text-cobalt uppercase tracking-widest leading-relaxed flex items-end">
                     {project.xray.replace(/\|/g, " ")}
                   </div>
-                  <div className="relative z-20 transition-opacity duration-300">
-                    <span className="inline-block px-3 py-1 mb-6 border border-[#C9A84C]/40 text-[#C9A84C] text-xs font-mono uppercase tracking-wider rounded-full backdrop-blur-sm">{project.tag}</span>
-                    <motion.h2 layoutId={`title-${project.id}`} className="text-white text-4xl md:text-5xl font-bold leading-tight tracking-tight">{project.title}</motion.h2>
-                    <div className="inline-block text-xs uppercase tracking-wider text-[#C9A84C]/70 bg-[#C9A84C]/10 px-3 py-1 rounded-full mt-4 mb-4">{project.badge}</div>
-                    <p className="text-text-secondary text-lg md:text-xl font-normal max-w-md leading-relaxed">{project.description}</p>
+                  <div className="relative z-20 flex items-start justify-between">
+                    <span className="font-mono text-xs text-cobalt">[{project.index}]</span>
+                    <span className="inline-block px-3 py-1 border border-ink/40 text-ink font-mono text-[10px] uppercase tracking-[0.18em] rounded-full bg-card/80 backdrop-blur-sm">{project.tag}</span>
                   </div>
-                  <div className="relative z-20 flex justify-end mt-12 transition-opacity duration-300">
-                    {project.id === "card-lateralx" ? (
+                  <div className="relative z-20">
+                    <motion.h2 layoutId={`title-${project.id}`} className="display-serif text-ink text-5xl md:text-6xl leading-[0.95]">{project.title}</motion.h2>
+                    <div className="inline-block font-mono text-[10px] uppercase tracking-[0.18em] text-vermilion border border-vermilion/40 bg-vermilion/5 px-3 py-1 rounded-full mt-4 mb-4">★ {project.badge}</div>
+                    <p className="text-ink-soft text-lg md:text-xl font-normal max-w-md leading-relaxed">{project.description}</p>
+                    <div className="flex justify-end mt-8">
                       <a
-                        className="inline-flex items-center gap-2 text-white text-base font-medium hover:text-[#C9A84C] transition-colors group-hover:translate-x-1 transition-transform duration-300"
-                        href="./lateral-x-showcase.html"
+                        className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-ink hover:text-cobalt transition-colors group-hover:translate-x-1 duration-300"
+                        href={project.href}
                         onClick={(event) => event.stopPropagation()}
                       >
-                        View Case Study <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+                        View Case Study <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                       </a>
-                    ) : project.id === "card-glucopatch" ? (
-                      <a
-                        className="inline-flex items-center gap-2 text-white text-base font-medium hover:text-[#C9A84C] transition-colors group-hover:translate-x-1 transition-transform duration-300"
-                        href="./glucopatch_simulation.html"
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        View Case Study <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
-                      </a>
-                    ) : project.id === "card-armex" ? (
-                      <a
-                        className="inline-flex items-center gap-2 text-white text-base font-medium hover:text-[#C9A84C] transition-colors group-hover:translate-x-1 transition-transform duration-300"
-                        href="./aura-sleeve.html"
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        View Case Study <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
-                      </a>
-                    ) : project.id === "card-agrosync" ? (
-                      <a
-                        className="inline-flex items-center gap-2 text-white text-base font-medium hover:text-[#C9A84C] transition-colors group-hover:translate-x-1 transition-transform duration-300"
-                        href="./agrosync.html"
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        View Case Study <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
-                      </a>
-                    ) : (
-                      <span className="inline-flex items-center gap-2 text-white text-base font-medium hover:text-[#C9A84C] transition-colors group-hover:translate-x-1 transition-transform duration-300">
-                        View Case Study <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
-                      </span>
-                    )}
+                    </div>
                   </div>
                 </motion.div>
               ))}
 
-              <div className="lg:col-span-5 group relative flex items-center justify-between bg-surface-dark border border-border-dark p-8 md:p-12 hover:border-[#C9A84C]/50 transition-colors duration-500 rounded mt-0">
+              <div className="lg:col-span-5 cursor-hover group relative flex items-center justify-between bg-card border border-ink/15 hover:border-cobalt p-8 md:p-12 transition-colors duration-500 rounded-lg mt-0">
                 <div className="flex flex-col md:flex-row md:items-center justify-between w-full gap-8">
                   <div>
-                    <h2 className="text-white text-2xl md:text-3xl font-bold tracking-tight mb-2">Technical Capabilities</h2>
-                    <p className="text-text-secondary text-base max-w-2xl">Specializing in the intersection of biological systems and digital architecture.</p>
+                    <div className="micro-label mb-3">Toolkit</div>
+                    <h2 className="display-serif text-ink text-3xl md:text-4xl mb-2">Technical Capabilities</h2>
+                    <p className="text-ink-soft text-base max-w-2xl">Specializing in the intersection of biological systems and digital architecture.</p>
                   </div>
-                  <div className="flex gap-4 flex-wrap">
+                  <div className="flex gap-3 flex-wrap">
                     {capabilities.map((capability) => (
                       <span
                         key={capability.label}
-                        className="cursor-hover px-4 py-2 bg-[#10132A] text-text-secondary text-sm rounded border border-transparent hover:border-[#C9A84C]/40 transition-colors"
+                        className="cursor-hover px-4 py-2 bg-paper text-ink text-sm rounded-full border border-ink/20 hover:border-cobalt hover:text-cobalt transition-colors"
                         onMouseEnter={() => {
                           setTrailer((prev) => ({ ...prev, visible: true, image: capability.image, label: capability.label }));
                         }}
@@ -700,71 +723,40 @@ export default function App() {
 
         <AnimatePresence>
           {selectedProject ? (
-            <motion.div className="fixed inset-0 z-50 bg-[#0A0A0A] overflow-y-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-              <motion.div layoutId={selectedProject.id} transition={cardTransition} className="w-full min-h-screen bg-[#0A0A0A] px-6 md:px-12 py-8 md:py-12">
+            <motion.div className="fixed inset-0 z-50 bg-paper overflow-y-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+              <motion.div layoutId={selectedProject.id} transition={cardTransition} className="w-full min-h-screen bg-paper px-6 md:px-12 py-8 md:py-12">
                 <div className="w-full max-w-[1280px] mx-auto">
-                  <div className="flex justify-end mb-4">
+                  <div className="flex justify-between items-center mb-6">
+                    <span className="font-mono text-xs text-cobalt">[{selectedProject.index}] — CASE FILE</span>
                     <button
                       type="button"
                       onClick={() => setSelectedId(null)}
-                      className="inline-flex items-center gap-2 px-4 py-2 text-sm text-[#C9A84C] border border-[#C9A84C]/50 rounded-full hover:bg-[#C9A84C] hover:text-[#0B0D1A] transition-colors"
+                      className="btn-pill h-10 px-5 text-sm"
                     >
                       Close <span className="material-symbols-outlined text-[18px]">close</span>
                     </button>
                   </div>
 
-                  <motion.div layoutId={`image-${selectedProject.id}`} transition={cardTransition} className="w-full h-[38vh] md:h-[55vh] rounded-xl overflow-hidden border border-border-dark">
+                  <motion.div layoutId={`image-${selectedProject.id}`} transition={cardTransition} className="w-full h-[38vh] md:h-[55vh] rounded-xl overflow-hidden border border-ink/20 shadow-[10px_10px_0_rgba(22,21,15,0.85)]">
                     <img src={selectedProject.image} alt={selectedProject.imageAlt} className="w-full h-full object-cover" />
                   </motion.div>
 
-                  <div className="mt-8 md:mt-12 space-y-5">
-                    <span className="inline-block px-3 py-1 border border-[#C9A84C]/40 text-[#C9A84C] text-xs font-mono uppercase tracking-wider rounded-full">{selectedProject.tag}</span>
-                    <motion.h2 layoutId={`title-${selectedProject.id}`} transition={cardTransition} className="text-white text-4xl md:text-6xl font-bold leading-tight tracking-tight">
+                  <div className="mt-10 md:mt-14 space-y-5">
+                    <span className="inline-block px-3 py-1 border border-ink/40 text-ink font-mono text-[10px] uppercase tracking-[0.18em] rounded-full">{selectedProject.tag}</span>
+                    <motion.h2 layoutId={`title-${selectedProject.id}`} transition={cardTransition} className="display-serif text-ink text-5xl md:text-7xl leading-[0.95]">
                       {selectedProject.title}
                     </motion.h2>
-                    <div className="inline-block text-xs uppercase tracking-wider text-[#C9A84C]/70 bg-[#C9A84C]/10 px-3 py-1 rounded-full">{selectedProject.badge}</div>
-                    <p className="text-text-secondary text-lg md:text-2xl max-w-3xl leading-relaxed">{selectedProject.description}</p>
-                    <p className="text-text-secondary/90 text-base md:text-lg max-w-4xl leading-relaxed">
+                    <div className="inline-block font-mono text-[10px] uppercase tracking-[0.18em] text-vermilion border border-vermilion/40 bg-vermilion/5 px-3 py-1 rounded-full">★ {selectedProject.badge}</div>
+                    <p className="text-ink-soft text-lg md:text-2xl max-w-3xl leading-relaxed">{selectedProject.description}</p>
+                    <p className="text-ink-soft/90 text-base md:text-lg max-w-4xl leading-relaxed">
                       This case study view is now app-like and route-less: the project physically expands from the Bento card into an immersive, full-screen narrative surface and collapses back seamlessly.
                     </p>
 
-                    {selectedProject.id === "card-lateralx" ? (
-                      <div className="pt-4">
-                        <a
-                          href="./lateral-x-showcase.html"
-                          className="inline-flex items-center justify-center h-12 px-6 border border-[#C9A84C] text-white text-sm font-bold tracking-wide hover:bg-[#C9A84C] hover:text-[#0B0D1A] transition-colors rounded-full"
-                        >
-                          Here's the Simulation <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                        </a>
-                      </div>
-                    ) : selectedProject.id === "card-glucopatch" ? (
-                      <div className="pt-4">
-                        <a
-                          href="./glucopatch_simulation.html"
-                          className="inline-flex items-center justify-center h-12 px-6 border border-[#C9A84C] text-white text-sm font-bold tracking-wide hover:bg-[#C9A84C] hover:text-[#0B0D1A] transition-colors rounded-full"
-                        >
-                          Here's the Simulation <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                        </a>
-                      </div>
-                    ) : selectedProject.id === "card-armex" ? (
-                      <div className="pt-4">
-                        <a
-                          href="./aura-sleeve.html"
-                          className="inline-flex items-center justify-center h-12 px-6 border border-[#C9A84C] text-white text-sm font-bold tracking-wide hover:bg-[#C9A84C] hover:text-[#0B0D1A] transition-colors rounded-full"
-                        >
-                          Here's the Simulation <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                        </a>
-                      </div>
-                    ) : selectedProject.id === "card-agrosync" ? (
-                      <div className="pt-4">
-                        <a
-                          href="./agrosync.html"
-                          className="inline-flex items-center justify-center h-12 px-6 border border-[#C9A84C] text-white text-sm font-bold tracking-wide hover:bg-[#C9A84C] hover:text-[#0B0D1A] transition-colors rounded-full"
-                        >
-                          Here's the Simulation <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                        </a>
-                      </div>
-                    ) : null}
+                    <div className="pt-4">
+                      <a href={selectedProject.href} className="btn-pill h-12 px-7 text-sm">
+                        Here&apos;s the Simulation <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -772,28 +764,58 @@ export default function App() {
           ) : null}
         </AnimatePresence>
 
-        <motion.footer className="w-full bg-surface-dark border-t border-[#C9A84C]/10 relative z-50" {...revealMotion}>
-          <div className="w-full max-w-[1920px] mx-auto px-6 md:pl-[12%] md:pr-[12%] py-20 md:py-28">
+        <motion.section className="relative w-full py-20 md:py-28 bg-paper/85" {...revealMotion}>
+          <div className="w-full max-w-[1920px] mx-auto px-6 md:pl-[10%] md:pr-[10%]">
+            <a
+              href="./about.html#sbe"
+              className="group relative flex flex-col md:flex-row items-stretch gap-8 md:gap-12 bg-card border border-ink rounded-lg p-8 md:p-12 overflow-hidden hover:border-cobalt transition-colors duration-500 shadow-[10px_10px_0_rgba(22,21,15,0.85)] hover:shadow-[10px_10px_0_rgba(43,63,242,0.85)]"
+            >
+              <div className="flex-1">
+                <div className="micro-label mb-4">Campus Leadership · SBE VIT</div>
+                <h3 className="display-serif text-ink text-4xl md:text-6xl leading-[0.98] mb-5">
+                  From TEAMS member<br />to <em>Vice Chairperson</em>.
+                </h3>
+                <p className="text-ink-soft text-base md:text-lg max-w-xl leading-relaxed mb-6">
+                  My journey through the Society for Biological Engineering at VIT — competing, building, hosting Georift, and now leading the chapter.
+                </p>
+                <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-ink group-hover:text-cobalt transition-colors">
+                  Read the SBE journey <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </span>
+              </div>
+              <div className="md:w-[280px] shrink-0 flex items-center">
+                <div className="w-full rounded-md overflow-hidden border border-ink/20 rotate-2 group-hover:rotate-0 transition-transform duration-500">
+                  <img src="/Vice Chair.jpeg" alt="Rudrabha as Vice Chairperson of SBE VIT" className="w-full h-48 md:h-56 object-cover object-[center_22%] grayscale group-hover:grayscale-0 transition-all duration-700" />
+                </div>
+              </div>
+            </a>
+          </div>
+        </motion.section>
+
+        <motion.footer className="w-full bg-ink text-paper relative z-50 rounded-t-[28px] mt-10" {...revealMotion}>
+          <div className="w-full max-w-[1920px] mx-auto px-6 md:pl-[10%] md:pr-[10%] py-20 md:py-28">
             <div className="mb-16">
-              <h4 className="text-white text-3xl md:text-5xl font-bold tracking-tight mb-4">Let&apos;s build something that matters.</h4>
+              <div className="micro-label mb-6" style={{ color: "rgba(245,241,230,0.6)" }}>Open for collaboration</div>
+              <h4 className="display-serif text-paper text-5xl md:text-8xl leading-[0.95] mb-8">
+                Let&apos;s build something<br />that <em className="text-vermilion not-italic" style={{ fontStyle: "italic" }}>matters</em>.
+              </h4>
               <button
                 type="button"
                 onClick={() => setIsComposeOpen(true)}
-                className="inline-flex items-center gap-2 text-[#C9A84C] text-base font-medium hover:text-white transition-colors"
+                className="inline-flex items-center gap-3 border border-paper/40 rounded-full px-7 h-13 py-3 font-mono text-xs uppercase tracking-[0.18em] text-paper hover:bg-paper hover:text-ink transition-colors"
               >
-                Start a Conversation <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+                Start a Conversation <span className="material-symbols-outlined text-[18px]">arrow_outward</span>
               </button>
             </div>
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pt-8 border-t border-border-dark">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pt-8 border-t border-paper/15">
               <div>
-                <h5 className="text-white font-bold text-sm tracking-wider mb-1">RUDRABHA DASGUPTA</h5>
-                <p className="text-text-tertiary text-sm">Biotechnological Engineer &amp; HealthTech Innovator</p>
+                <h5 className="font-mono text-paper font-bold text-xs tracking-[0.2em] mb-1">RUDRABHA DASGUPTA</h5>
+                <p className="text-paper/50 text-sm">Biotechnological Engineer &amp; HealthTech Innovator</p>
               </div>
               <div className="flex gap-8">
-                <a className="text-text-secondary hover:text-[#C9A84C] transition-colors text-sm" href={linkedInUrl} target="_blank" rel="noreferrer">LinkedIn</a>
-                <a className="text-text-secondary hover:text-[#C9A84C] transition-colors text-sm" href={`mailto:${contactEmail}`}>Email</a>
+                <a className="text-paper/70 hover:text-vermilion transition-colors text-sm" href={linkedInUrl} target="_blank" rel="noreferrer">LinkedIn</a>
+                <a className="text-paper/70 hover:text-vermilion transition-colors text-sm" href={`mailto:${contactEmail}`}>Email</a>
               </div>
-              <div className="text-text-tertiary text-xs">&copy; 2026 Rudrabha Dasgupta. All rights reserved.</div>
+              <div className="text-paper/40 font-mono text-xs">&copy; 2026 Rudrabha Dasgupta. All rights reserved.</div>
             </div>
           </div>
         </motion.footer>
@@ -801,7 +823,7 @@ export default function App() {
         <AnimatePresence>
           {isComposeOpen ? (
             <motion.div
-              className="fixed bottom-6 right-6 z-[140] w-[420px] max-w-[calc(100vw-48px)] rounded-xl border border-[#C9A84C]/25 bg-[#0B0D1A]/95 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.65)] overflow-hidden"
+              className="fixed bottom-6 right-6 z-[140] w-[420px] max-w-[calc(100vw-48px)] rounded-xl border border-ink bg-card shadow-[10px_10px_0_rgba(22,21,15,0.85)] overflow-hidden"
               initial={reduceMotion ? false : { y: 24, opacity: 0 }}
               animate={reduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
               exit={reduceMotion ? { opacity: 0 } : { y: 24, opacity: 0 }}
@@ -809,11 +831,11 @@ export default function App() {
               role="dialog"
               aria-label="Compose message"
             >
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-                <div className="text-[11px] tracking-[0.22em] uppercase text-text-tertiary">New Message</div>
+              <div className="flex items-center justify-between px-4 py-3 border-b border-ink/10 bg-paper-deep/60">
+                <div className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-soft">✉ New Message</div>
                 <button
                   type="button"
-                  className="text-text-tertiary hover:text-white transition-colors"
+                  className="text-ink-faint hover:text-ink transition-colors"
                   onClick={() => setIsComposeOpen(false)}
                   aria-label="Close compose"
                 >
@@ -821,10 +843,10 @@ export default function App() {
                 </button>
               </div>
 
-              <div className="px-4 py-3 border-b border-white/10">
+              <div className="px-4 py-3 border-b border-ink/10">
                 <div className="flex items-center gap-2 text-sm">
-                  <span className="text-text-tertiary">To</span>
-                  <span className="text-white font-medium">{contactEmail}</span>
+                  <span className="text-ink-faint">To</span>
+                  <span className="text-ink font-medium">{contactEmail}</span>
                 </div>
               </div>
 
@@ -843,104 +865,104 @@ export default function App() {
                   value={(composeDraft.attachments || []).map((file) => file.name).join(", ")}
                 />
 
-                <div className="px-4 py-3 border-b border-white/10">
-                  <label className="block text-[10px] tracking-[0.22em] uppercase text-text-tertiary mb-1" htmlFor="compose-from">Your Email</label>
-                <input
-                  id="compose-from"
-                  name="from_email"
-                  className="w-full bg-transparent border border-white/10 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-[#C9A84C]/60"
-                  placeholder="you@example.com"
-                  value={composeDraft.fromEmail}
-                  onChange={(event) => setComposeDraft((prev) => ({ ...prev, fromEmail: event.target.value }))}
-                  disabled={isSending}
-                />
-              </div>
-
-              <div className="px-4 py-3 border-b border-white/10">
-                <label className="block text-[10px] tracking-[0.22em] uppercase text-text-tertiary mb-1" htmlFor="compose-subject">Subject</label>
-                <input
-                  id="compose-subject"
-                  name="subject"
-                  className="w-full bg-transparent border border-white/10 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-[#C9A84C]/60"
-                  placeholder="Subject"
-                  value={composeDraft.subject}
-                  onChange={(event) => setComposeDraft((prev) => ({ ...prev, subject: event.target.value }))}
-                  disabled={isSending}
-                />
-              </div>
-
-              <div className="px-4 py-3">
-                <label className="block text-[10px] tracking-[0.22em] uppercase text-text-tertiary mb-1" htmlFor="compose-body">Message</label>
-                <textarea
-                  id="compose-body"
-                  name="message"
-                  className="w-full bg-transparent border border-white/10 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-[#C9A84C]/60 min-h-[120px] resize-none"
-                  placeholder="Write your message..."
-                  value={composeDraft.body}
-                  onChange={(event) => setComposeDraft((prev) => ({ ...prev, body: event.target.value }))}
-                  disabled={isSending}
-                />
-
-                <div className="mt-3 flex items-center justify-between gap-3">
-                  <label className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/10 hover:border-[#C9A84C]/40 text-text-secondary hover:text-white transition-colors cursor-pointer text-sm">
-                    <span className="material-symbols-outlined text-[18px]">attach_file</span>
-                    Attach
-                    <input
-                      ref={composeFileRef}
-                      type="file"
-                      name="attachments"
-                      className="hidden"
-                      multiple
-                      disabled={isSending}
-                      onChange={(event) => {
-                        const files = Array.from(event.target.files || []);
-                        setComposeDraft((prev) => ({ ...prev, attachments: files }));
-                      }}
-                    />
-                  </label>
-
-                  <button
-                    type="submit"
-                    disabled={!canSendEmail}
-                    className={`inline-flex items-center justify-center h-10 px-5 rounded-full border transition-colors text-sm font-bold tracking-wide ${
-                      canSendEmail
-                        ? "border-[#C9A84C] text-white hover:bg-[#C9A84C] hover:text-[#0B0D1A]"
-                        : "border-white/10 text-white/30 cursor-not-allowed"
-                    }`}
-                  >
-                    {isSending ? "Sending..." : "Send"}
-                  </button>
+                <div className="px-4 py-3 border-b border-ink/10">
+                  <label className="block font-mono text-[10px] tracking-[0.22em] uppercase text-ink-faint mb-1" htmlFor="compose-from">Your Email</label>
+                  <input
+                    id="compose-from"
+                    name="from_email"
+                    className="w-full bg-paper/60 border border-ink/15 rounded-lg px-3 py-2 text-ink text-sm outline-none focus:border-cobalt"
+                    placeholder="you@example.com"
+                    value={composeDraft.fromEmail}
+                    onChange={(event) => setComposeDraft((prev) => ({ ...prev, fromEmail: event.target.value }))}
+                    disabled={isSending}
+                  />
                 </div>
 
-                {(composeDraft.attachments || []).length ? (
-                  <div className="mt-3 text-xs text-text-tertiary">
-                    Attachments selected: {(composeDraft.attachments || []).map((file) => file.name).join(", ")}
-                  </div>
-                ) : null}
+                <div className="px-4 py-3 border-b border-ink/10">
+                  <label className="block font-mono text-[10px] tracking-[0.22em] uppercase text-ink-faint mb-1" htmlFor="compose-subject">Subject</label>
+                  <input
+                    id="compose-subject"
+                    name="subject"
+                    className="w-full bg-paper/60 border border-ink/15 rounded-lg px-3 py-2 text-ink text-sm outline-none focus:border-cobalt"
+                    placeholder="Subject"
+                    value={composeDraft.subject}
+                    onChange={(event) => setComposeDraft((prev) => ({ ...prev, subject: event.target.value }))}
+                    disabled={isSending}
+                  />
+                </div>
 
-                {emailJsReady && (!composeDraft.fromEmail.trim() || !composeDraft.subject.trim() || !composeDraft.body.trim()) ? (
-                  <div className="mt-3 text-xs text-text-tertiary">Enter your email, subject, and message to enable Send.</div>
-                ) : null}
+                <div className="px-4 py-3">
+                  <label className="block font-mono text-[10px] tracking-[0.22em] uppercase text-ink-faint mb-1" htmlFor="compose-body">Message</label>
+                  <textarea
+                    id="compose-body"
+                    name="message"
+                    className="w-full bg-paper/60 border border-ink/15 rounded-lg px-3 py-2 text-ink text-sm outline-none focus:border-cobalt min-h-[120px] resize-none"
+                    placeholder="Write your message..."
+                    value={composeDraft.body}
+                    onChange={(event) => setComposeDraft((prev) => ({ ...prev, body: event.target.value }))}
+                    disabled={isSending}
+                  />
 
-                {composeStatus.type !== "idle" ? (
-                  <div
-                    className={`mt-3 text-xs ${
-                      composeStatus.type === "error"
-                        ? "text-red-300"
-                        : composeStatus.type === "success"
-                          ? "text-emerald-300"
-                          : "text-text-tertiary"
-                    }`}
-                  >
-                    {composeStatus.message}
+                  <div className="mt-3 flex items-center justify-between gap-3">
+                    <label className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-ink/15 hover:border-cobalt text-ink-soft hover:text-ink transition-colors cursor-pointer text-sm">
+                      <span className="material-symbols-outlined text-[18px]">attach_file</span>
+                      Attach
+                      <input
+                        ref={composeFileRef}
+                        type="file"
+                        name="attachments"
+                        className="hidden"
+                        multiple
+                        disabled={isSending}
+                        onChange={(event) => {
+                          const files = Array.from(event.target.files || []);
+                          setComposeDraft((prev) => ({ ...prev, attachments: files }));
+                        }}
+                      />
+                    </label>
+
+                    <button
+                      type="submit"
+                      disabled={!canSendEmail}
+                      className={`inline-flex items-center justify-center h-10 px-6 rounded-full text-sm font-bold tracking-wide transition-colors ${
+                        canSendEmail
+                          ? "bg-ink text-paper hover:bg-cobalt"
+                          : "bg-ink/5 border border-ink/10 text-ink/30 cursor-not-allowed"
+                      }`}
+                    >
+                      {isSending ? "Sending..." : "Send"}
+                    </button>
                   </div>
-                ) : !emailJsReady ? (
-                  <div className="mt-3 text-xs text-text-tertiary">
-                    Configure EmailJS (VITE_EMAILJS_SERVICE_ID / VITE_EMAILJS_TEMPLATE_ID / VITE_EMAILJS_PUBLIC_KEY) to enable direct send.
-                  </div>
-                ) : null}
-              </div>
-            </form>
+
+                  {(composeDraft.attachments || []).length ? (
+                    <div className="mt-3 text-xs text-ink-faint">
+                      Attachments selected: {(composeDraft.attachments || []).map((file) => file.name).join(", ")}
+                    </div>
+                  ) : null}
+
+                  {emailJsReady && (!composeDraft.fromEmail.trim() || !composeDraft.subject.trim() || !composeDraft.body.trim()) ? (
+                    <div className="mt-3 text-xs text-ink-faint">Enter your email, subject, and message to enable Send.</div>
+                  ) : null}
+
+                  {composeStatus.type !== "idle" ? (
+                    <div
+                      className={`mt-3 text-xs ${
+                        composeStatus.type === "error"
+                          ? "text-vermilion"
+                          : composeStatus.type === "success"
+                            ? "text-moss"
+                            : "text-ink-faint"
+                      }`}
+                    >
+                      {composeStatus.message}
+                    </div>
+                  ) : !emailJsReady ? (
+                    <div className="mt-3 text-xs text-ink-faint">
+                      Configure EmailJS (VITE_EMAILJS_SERVICE_ID / VITE_EMAILJS_TEMPLATE_ID / VITE_EMAILJS_PUBLIC_KEY) to enable direct send.
+                    </div>
+                  ) : null}
+                </div>
+              </form>
             </motion.div>
           ) : null}
         </AnimatePresence>

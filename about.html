@@ -5,101 +5,230 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>About Me — Rudrabha Dasgupta</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --gold:#b5922a;
-  --gold2:#d4a93a;
-  --white:#f0ece4;
-  --dim:#6b6560;
-  --bg:#0a0905;
+  --paper:#F5F1E6;
+  --paper-deep:#EDE7D6;
+  --card:#FCFAF3;
+  --ink:#16150F;
+  --ink-soft:#57534A;
+  --ink-faint:#8A857A;
+  --cobalt:#2B3FF2;
+  --vermilion:#FF4D21;
+  --rule:rgba(22,21,15,.14);
 }
 
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+body{background:var(--paper);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+
+/* paper grain */
+body::after{
+  content:"";position:fixed;inset:0;z-index:2000;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection{background:var(--cobalt);color:var(--paper)}
 
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:20px 40px;
-  background:linear-gradient(180deg,rgba(10,9,5,.95) 0%,transparent 100%);
+  background:linear-gradient(180deg,rgba(245,241,230,.96) 0%,rgba(245,241,230,0) 100%);
 }
-.nav-brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;letter-spacing:1px;color:var(--white);text-transform:uppercase}
+.nav-brand{display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--ink);text-transform:uppercase}
 .nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:16px}
-.nav-grid span{width:7px;height:7px;background:var(--white);display:block}
+.nav-grid span{width:7px;height:7px;background:var(--ink);display:block}
 .nav-links{display:flex;gap:28px;flex-wrap:wrap;justify-content:flex-end}
-.nav-links a{font-size:12px;font-weight:500;letter-spacing:1.5px;color:var(--white);text-decoration:none;text-transform:uppercase;opacity:.85;transition:opacity .2s}
-.nav-links a:hover{opacity:1}
+.nav-links a{font-family:'Space Mono',monospace;font-size:11px;font-weight:400;letter-spacing:2px;color:var(--ink);text-decoration:none;text-transform:uppercase;opacity:.8;transition:opacity .2s,color .2s}
+.nav-links a:hover{opacity:1;color:var(--cobalt)}
 
-#top-wave{position:fixed;top:0;left:0;right:0;height:170px;z-index:90;pointer-events:none;opacity:.22}
+#top-wave{position:fixed;top:0;left:0;right:0;height:170px;z-index:90;pointer-events:none;opacity:.30}
 
 #hero{min-height:100vh;display:grid;grid-template-columns:1.1fr 0.9fr;gap:42px;align-items:center;padding:140px 60px 80px 60px;position:relative;overflow:hidden}
-#hero-canvas{position:absolute;inset:0;z-index:0;opacity:.26}
+#hero-canvas{position:absolute;inset:0;z-index:0;opacity:.34}
 .hero-left,.hero-right{position:relative;z-index:2}
 
-.hero-label{font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.hero-label::before{content:'';width:30px;height:1px;background:var(--gold)}
+.hero-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--ink-soft);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-label::before{content:'';width:30px;height:1px;background:var(--cobalt)}
 
-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,9vw,140px);line-height:.92;color:var(--white);letter-spacing:1px;margin-bottom:18px}
-h1 em{color:var(--gold);font-style:normal}
+h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(64px,8.5vw,128px);line-height:.95;color:var(--ink);letter-spacing:-0.01em;margin-bottom:18px}
+h1 em{color:var(--cobalt);font-style:italic}
 
-.sub{font-size:16px;line-height:1.7;color:var(--dim);max-width:620px;font-weight:300}
+.sub{font-size:16px;line-height:1.75;color:var(--ink-soft);max-width:620px;font-weight:400}
+.sub strong{color:var(--ink);font-weight:600}
 
 .card{
-  border-radius:18px;overflow:hidden;
-  border:1px solid rgba(181,146,42,.22);
-  background:rgba(7,8,15,.92);
-  box-shadow:0 18px 60px rgba(0,0,0,0.45);
+  border-radius:16px;overflow:hidden;
+  border:1px solid var(--ink);
+  background:var(--card);
+  box-shadow:10px 10px 0 rgba(22,21,15,.88);
+  transform:rotate(1.2deg);
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
 }
-.card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(10,9,5,.70)}
-.card-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,236,228,.55)}
-.card-badge{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);border:1px solid rgba(181,146,42,.25);padding:4px 10px;border-radius:999px}
+.card:hover{transform:rotate(0deg)}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--rule);background:var(--paper-deep)}
+.card-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft)}
+.card-badge{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cobalt);border:1px solid rgba(43,63,242,.35);padding:4px 10px;border-radius:999px}
 .card-body{padding:16px}
 
 .portrait{
   width:100%;
   aspect-ratio: 4 / 5;
-  border-radius:16px;
+  border-radius:10px;
   object-fit:cover;
-  border:1px solid rgba(181,146,42,.18);
-  background:radial-gradient(900px 520px at 20% 20%, rgba(181,146,42,0.14), transparent 70%), rgba(255,255,255,0.02);
+  border:1px solid var(--rule);
+  background:var(--paper-deep);
 }
 .fallback{
   width:100%;
   aspect-ratio: 4 / 5;
-  border-radius:16px;
-  border:1px solid rgba(181,146,42,.18);
-  background:radial-gradient(900px 520px at 20% 20%, rgba(181,146,42,0.14), transparent 70%), rgba(255,255,255,0.02);
+  border-radius:10px;
+  border:1px solid var(--rule);
+  background:var(--paper-deep);
   display:none;
   align-items:center;
   justify-content:center;
   text-align:center;
   padding:16px;
-  color:rgba(240,236,228,.70);
+  color:var(--ink-soft);
 }
-.fallback strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;color:var(--white);margin-bottom:10px}
+.fallback strong{display:block;font-family:'Instrument Serif',serif;font-size:48px;letter-spacing:1px;color:var(--ink);margin-bottom:10px}
 
 .section{padding:110px 60px;max-width:1200px;margin:0 auto}
-.section-num{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.section-num::before{content:'';width:30px;height:1px;background:var(--gold)}
+.section-num{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--ink-soft);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-num::before{content:'';width:30px;height:1px;background:var(--cobalt)}
 
-h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,6vw,84px);line-height:.95;color:var(--white);letter-spacing:.5px;margin-bottom:24px}
+h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,6vw,84px);line-height:.98;color:var(--ink);letter-spacing:-0.01em;margin-bottom:24px}
+h2 em{color:var(--cobalt);font-style:italic}
 
-.copy{font-size:15px;line-height:1.8;color:rgba(240,236,228,.72);font-weight:300;max-width:980px}
-.copy strong{color:var(--gold2);font-weight:500}
+.copy{font-size:15px;line-height:1.85;color:var(--ink-soft);font-weight:400;max-width:980px}
+.copy strong{color:var(--cobalt);font-weight:600}
 
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px}
-.block{background:rgba(10,9,5,.72);border:1px solid rgba(181,146,42,.14);border-radius:18px;padding:16px}
-.block .t{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,236,228,.45);margin-bottom:8px}
-.block .b{font-size:14px;line-height:1.75;color:rgba(240,236,228,.80)}
+.block{background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:20px;transition:border-color .3s,transform .3s,box-shadow .3s}
+.block:hover{border-color:var(--cobalt);transform:translateY(-3px);box-shadow:0 14px 36px rgba(22,21,15,.10)}
+.block .t{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cobalt);margin-bottom:10px}
+.block .b{font-size:14px;line-height:1.8;color:var(--ink-soft)}
+.block .b strong{color:var(--ink);font-weight:600}
 
 ul{padding-left:18px}
-li{margin:10px 0;color:rgba(240,236,228,.78);line-height:1.7;font-weight:300}
+li{margin:10px 0;color:var(--ink-soft);line-height:1.75;font-weight:400}
+li::marker{color:var(--vermilion)}
+li strong{color:var(--ink);font-weight:600}
 
-footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex;justify-content:space-between;align-items:center}
-.footer-text{font-size:12px;color:var(--dim);letter-spacing:.5px}
-.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--white);letter-spacing:3px}
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ── SBE JOURNEY TIMELINE ── */
+.sbe-intro-card{
+  background:var(--card);border:1px solid var(--rule);border-radius:18px;padding:22px;
+  margin-top:26px;display:flex;flex-direction:column;gap:12px;
+  transition:border-color .3s,box-shadow .3s;
+}
+.sbe-intro-card:hover{border-color:rgba(43,63,242,.4);box-shadow:0 14px 36px rgba(22,21,15,.08)}
+.sbe-chip{
+  display:inline-flex;align-items:center;gap:8px;align-self:flex-start;
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--cobalt);border:1px solid rgba(43,63,242,.35);padding:5px 12px;border-radius:999px;
+  text-decoration:none;transition:background .2s,color .2s;
+}
+.sbe-chip:hover{background:var(--cobalt);color:var(--paper)}
+
+.sbe-cover{
+  border-radius:14px;overflow:hidden;border:1px solid var(--ink);
+  box-shadow:8px 8px 0 rgba(22,21,15,.85);
+  margin-bottom:34px;position:relative;
+}
+.sbe-cover img{display:block;width:100%;height:120px;object-fit:cover;object-position:center}
+.sbe-cover .cover-tag{
+  position:absolute;bottom:10px;right:12px;
+  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--paper);background:rgba(22,21,15,.65);border:1px solid rgba(245,241,230,.25);
+  padding:5px 10px;border-radius:999px;backdrop-filter:blur(6px);
+}
+
+.journey{position:relative;margin-top:54px;padding-left:34px}
+.journey-rail{
+  position:absolute;left:8px;top:6px;bottom:6px;width:2px;
+  background:rgba(22,21,15,.10);border-radius:2px;overflow:hidden;
+}
+.journey-rail::before{
+  content:'';position:absolute;left:0;top:0;width:100%;height:100%;
+  background:linear-gradient(180deg,var(--cobalt),var(--vermilion));
+  transform:scaleY(0);transform-origin:top;
+  transition:transform 1.8s cubic-bezier(.22,1,.36,1);
+}
+.journey.in .journey-rail::before{transform:scaleY(1)}
+
+.milestone{position:relative;padding:0 0 64px 26px}
+.milestone:last-child{padding-bottom:0}
+.milestone::before{
+  content:'';position:absolute;left:-33px;top:6px;width:16px;height:16px;border-radius:50%;
+  background:var(--paper);border:2px solid var(--cobalt);
+  transition:background .4s,transform .4s,box-shadow .4s;
+}
+.milestone:hover::before{background:var(--cobalt);transform:scale(1.25);box-shadow:0 0 0 6px rgba(43,63,242,.14)}
+.milestone:last-child::before{border-color:var(--vermilion)}
+.milestone:last-child:hover::before{background:var(--vermilion);box-shadow:0 0 0 6px rgba(255,77,33,.14)}
+
+.milestone-tag{
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--cobalt);margin-bottom:8px;display:block;
+}
+.milestone h3{
+  font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(28px,3.4vw,44px);
+  line-height:1.05;color:var(--ink);margin-bottom:12px;letter-spacing:-0.01em;
+}
+.milestone h3 em{color:var(--cobalt);font-style:italic}
+.milestone-grid{display:grid;grid-template-columns:1.25fr 0.75fr;gap:22px;align-items:start}
+.milestone-copy{font-size:14.5px;line-height:1.85;color:var(--ink-soft)}
+.milestone-copy strong{color:var(--ink);font-weight:600}
+.milestone-copy a{color:var(--cobalt);text-decoration:none;border-bottom:1px solid rgba(43,63,242,.4)}
+.milestone-copy a:hover{border-bottom-color:var(--cobalt)}
+
+.skill-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.skill-pill{
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.3px;text-transform:uppercase;
+  color:var(--ink-soft);border:1px solid var(--rule);padding:6px 12px;border-radius:999px;
+  transition:border-color .2s,color .2s,transform .2s;
+}
+.skill-pill:hover{border-color:var(--cobalt);color:var(--cobalt);transform:translateY(-2px)}
+
+.milestone-photo{
+  border-radius:14px;overflow:hidden;border:1px solid var(--ink);
+  box-shadow:8px 8px 0 rgba(22,21,15,.85);
+  transform:rotate(1.6deg);
+  transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s;
+  background:var(--paper-deep);
+}
+.milestone:nth-child(odd) .milestone-photo{transform:rotate(-1.6deg)}
+.milestone-photo:hover{transform:rotate(0) scale(1.02);box-shadow:8px 8px 0 rgba(43,63,242,.85)}
+.milestone-photo img{display:block;width:100%;height:220px;object-fit:cover;object-position:center 22%;filter:grayscale(35%);transition:filter .6s}
+.milestone-photo:hover img{filter:grayscale(0)}
+.milestone-photo .cap{
+  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--ink-soft);padding:9px 12px;border-top:1px solid var(--rule);background:var(--card);
+}
+
+@media (max-width: 1060px){
+  .milestone-grid{grid-template-columns:1fr}
+}
+
+footer{border-top:1px solid var(--rule);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;background:var(--ink)}
+.footer-text{font-family:'Space Mono',monospace;font-size:11px;color:rgba(245,241,230,.55);letter-spacing:1px}
+.footer-brand{font-family:'Instrument Serif',serif;font-size:20px;color:var(--paper);letter-spacing:1px}
+.footer-brand em{color:var(--vermilion);font-style:italic}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--paper)}
+::-webkit-scrollbar-thumb{background:rgba(43,63,242,.45);border-radius:3px}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+  .card{transform:none}
+}
 
 @media (max-width: 1060px){
   nav{padding:18px 20px}
@@ -120,6 +249,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#build">Build</a>
+    <a href="#sbe">SBE</a>
     <a href="#lead">Lead</a>
     <a href="./index.html">Back</a>
   </div>
@@ -134,7 +264,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
     <div class="hero-left">
       <div class="hero-label">About Me</div>
       <h1>Rudrabha <em>Dasgupta</em></h1>
-      <p class="sub">Biotechnologist | Hardware Innovator | Entrepreneur</p>
+      <p class="sub"><strong>Biotechnologist | Hardware Innovator | Entrepreneur</strong></p>
       <div style="height:18px"></div>
       <p class="sub">
         I am a builder at the intersection of biological sciences, hardware engineering, and business strategy. Currently in my second year (fourth semester) pursuing a B.Tech in Biotechnology at Vellore Institute of Technology (VIT), I am driven by a singular focus: translating complex scientific concepts into scalable, real-world technologies that improve human health and operational efficiency.
@@ -161,7 +291,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
           <div class="fallback" id="portrait-fallback">
             <div>
               <strong>RD</strong>
-              Add <span style="color:var(--gold2)">rudrabha.jpeg</span> to the <span style="color:var(--gold2)">public/</span> folder to display the photo.
+              Add <span style="color:var(--cobalt)">rudrabha.jpeg</span> to the <span style="color:var(--cobalt)">public/</span> folder to display the photo.
             </div>
           </div>
         </div>
@@ -171,22 +301,26 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
 </section>
 
 <section id="build" class="section" aria-label="Academic Foundation and Product Development">
-  <div class="section-num">01 — The Academic Foundation</div>
-  <h2>The Academic<br>Foundation</h2>
-  <div class="copy">
-    Maintaining an <strong>8.44 CGPA</strong>, my academic journey is an active synthesis of wet-lab biology and dry-lab computational power. My core coursework—spanning Biochemistry, Microbiology, Cell Biology, Analytical Techniques of Biotechnology (ATBT), and differential equations—provides the foundational science. Meanwhile, I am broadening my ecological understanding through an NPTEL course in wildlife.
-    <br /><br />
-    However, I don't confine my education to the laboratory. I actively merge biotechnology with computer science, utilizing tools like Flutter for user interfaces, Python for bioinformatics, and LSTM machine learning models for processing complex biological signals.
+  <div class="reveal">
+    <div class="section-num">01 — The Academic Foundation</div>
+    <h2>The Academic<br><em>Foundation</em></h2>
+    <div class="copy">
+      Maintaining an <strong>8.44 CGPA</strong>, my academic journey is an active synthesis of wet-lab biology and dry-lab computational power. My core coursework—spanning Biochemistry, Microbiology, Cell Biology, Analytical Techniques of Biotechnology (ATBT), and differential equations—provides the foundational science. Meanwhile, I am broadening my ecological understanding through an NPTEL course in wildlife.
+      <br /><br />
+      However, I don't confine my education to the laboratory. I actively merge biotechnology with computer science, utilizing tools like Flutter for user interfaces, Python for bioinformatics, and LSTM machine learning models for processing complex biological signals.
+    </div>
   </div>
 
-  <div class="section-num" style="margin-top:42px">02 — Product Development & Engineering</div>
-  <h2>Product<br>Development &<br>Engineering</h2>
-  <div class="copy">
-    I thrive in high-pressure environments that demand rapid prototyping and hardware integration. I build physical, wearable, and tech-driven solutions designed for immediate impact.
+  <div class="reveal" style="margin-top:42px">
+    <div class="section-num">02 — Product Development &amp; Engineering</div>
+    <h2>Product<br>Development &amp;<br><em>Engineering</em></h2>
+    <div class="copy">
+      I thrive in high-pressure environments that demand rapid prototyping and hardware integration. I build physical, wearable, and tech-driven solutions designed for immediate impact.
+    </div>
   </div>
 
   <div class="grid">
-    <div class="block">
+    <div class="block reveal">
       <div class="t">Wearables</div>
       <div class="b">
         <ul>
@@ -196,7 +330,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
         </ul>
       </div>
     </div>
-    <div class="block">
+    <div class="block reveal">
       <div class="t">Systems</div>
       <div class="b">
         <ul>
@@ -207,7 +341,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
     </div>
   </div>
 
-  <div class="block" style="margin-top:22px">
+  <div class="block reveal" style="margin-top:22px">
     <div class="t">Validation under pressure</div>
     <div class="b">
       My ability to execute under pressure was most recently validated by taking 1st Place at the Dr. Dev Hackathon (E-cell, SRM), alongside finalist finishes at Build-Up-Ideathon'25 (MSIT) and Zenith'25 (MLRIT).
@@ -216,42 +350,123 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
 </section>
 
 <section class="section" aria-label="Scientific Research and Synthetic Biology">
-  <div class="section-num">03 — Scientific Research & Synthetic Biology</div>
-  <h2>Scientific Research<br>& Synthetic Biology</h2>
-  <div class="copy">
-    Beyond hardware, I am deeply invested in genetic pathways and therapeutic targeting. As a Researcher for Project iDEA 2025 (AstraZeneca), I conducted specialized research into rare diseases, specifically focusing on Paroxysmal Nocturnal Hemoglobinuria (PNH), Neurofibromatosis type 1 (NF1), and Atypical Hemolytic Uremic Syndrome (aHUS).
-    <br /><br />
-    Currently, I am actively bridging my wet-lab and dry-lab expertise in preparation for the upcoming iGEM 2026 competition, focusing on novel synthetic biology solutions.
+  <div class="reveal">
+    <div class="section-num">03 — Scientific Research &amp; Synthetic Biology</div>
+    <h2>Scientific Research<br>&amp; Synthetic <em>Biology</em></h2>
+    <div class="copy">
+      Beyond hardware, I am deeply invested in genetic pathways and therapeutic targeting. As a Researcher for Project iDEA 2025 (AstraZeneca), I conducted specialized research into rare diseases, specifically focusing on Paroxysmal Nocturnal Hemoglobinuria (PNH), Neurofibromatosis type 1 (NF1), and Atypical Hemolytic Uremic Syndrome (aHUS).
+      <br /><br />
+      Currently, I am actively bridging my wet-lab and dry-lab expertise in preparation for the upcoming iGEM 2026 competition, focusing on novel synthetic biology solutions.
+    </div>
+  </div>
+</section>
+
+<section id="sbe" class="section" aria-label="SBE VIT — My Chapter Journey">
+  <div class="sbe-cover reveal">
+    <img src="/download.jpg" alt="Official cover of the Society for Biological Engineering, VIT" loading="lazy" />
+    <span class="cover-tag">SBE-VIT · Chapter Cover</span>
+  </div>
+  <div class="reveal">
+    <div class="section-num">04 — SBE VIT · My Chapter Journey</div>
+    <h2>Society for<br>Biological<br><em>Engineering.</em></h2>
+    <div class="copy">
+      The <strong>Society for Biological Engineering (SBE-VIT)</strong> is VIT Vellore's flagship biotechnology student chapter — a community that brings together passionate minds across branches of study. Originally functioning under the AIChE umbrella, SBE crossed its first milestone in 2018 when it was established as an independent student chapter. Since then it has hosted university-level conferences, seminars, hackathons, and flagship events that draw internal and external participants alike, pushing young intellectuals to make their mark in the scientific community.
+    </div>
+    <div class="sbe-intro-card">
+      <div class="copy" style="font-size:13.5px">
+        SBE is where my builder's instinct found a home — and a stage. What follows is that journey, milestone by milestone.
+      </div>
+      <a class="sbe-chip" href="https://www.instagram.com/sbe_vit/" target="_blank" rel="noreferrer">◉ Follow SBE-VIT on Instagram → @sbe_vit</a>
+    </div>
+  </div>
+
+  <div class="journey reveal" id="sbeJourney">
+    <div class="journey-rail" aria-hidden="true"></div>
+
+    <div class="milestone reveal">
+      <span class="milestone-tag">Chapter 01 · Where it began</span>
+      <h3>TEAMS <em>member.</em></h3>
+      <div class="milestone-grid">
+        <div class="milestone-copy">
+          I joined SBE through <strong>TEAMS</strong> — the competitive wing of the chapter that represents SBE in both <strong>internal and external competitions and hackathons</strong>. It's the proving ground where ideas get pressure-tested against real deadlines and real judges.
+          <br /><br />
+          The <strong>majority of the projects in this portfolio were born in TEAMS</strong> — Lateral X, GlucoPatch, Armex, AgroSync all trace their origins to TEAMS competition floors. And through the workshops TEAMS conducted, I picked up the skills that now power my builds:
+          <div class="skill-pills">
+            <span class="skill-pill">IoT</span>
+            <span class="skill-pill">Pitching</span>
+            <span class="skill-pill">Bioinformatics</span>
+            <span class="skill-pill">Rapid Prototyping</span>
+            <span class="skill-pill">Hackathon Strategy</span>
+          </div>
+        </div>
+        <div class="milestone-photo">
+          <img src="/IOT.jpeg" alt="IoT components from TEAMS workshops at SBE VIT" loading="lazy" />
+          <div class="cap">TEAMS Workshop · IoT Hardware</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="milestone reveal">
+      <span class="milestone-tag">Chapter 02 · Hosting the flagship</span>
+      <h3>Georift — Exploration <em>Beyond Boundaries.</em></h3>
+      <div class="milestone-grid">
+        <div class="milestone-copy">
+          Among the prominent events I organized is <strong>Georift: Exploration Beyond Boundaries</strong> — a flagship event conducted by SBE and hosted by our team at VIT (January 8–9, 2026). Georift challenged participants to explore biotechnology in the planet's most hostile frontiers: the <strong>deep sea, outer space, mining zones, microbial worlds, and radioactive environments</strong> — ideating biotech-based protection systems and innovations built to survive, or thrive, in extreme conditions.
+          <br /><br />
+          <a href="https://vit.ac.in/event/georift-exploration-beyond-boundaries" target="_blank" rel="noreferrer">Official event page on vit.ac.in →</a>
+        </div>
+        <div class="milestone-photo">
+          <img src="/Georift.jpeg" alt="Rudrabha at Georift, hosted by SBE VIT" loading="lazy" />
+          <div class="cap">Georift · Jan 2026 · SBE VIT</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="milestone reveal">
+      <span class="milestone-tag">Chapter 03 · Present day</span>
+      <h3>Vice Chairperson <em>&amp; HR.</em></h3>
+      <div class="milestone-grid">
+        <div class="milestone-copy">
+          Today I serve as <strong>Vice Chairperson &amp; HR, SBE VIT (International Chapter)</strong> — leading the community I grew up in. From competing on TEAMS floors to running the chapter's people and its flagship stages, the role closes the loop: building the same ecosystem that built me, and fostering the culture of bio-innovation on campus for the members who come next.
+        </div>
+        <div class="milestone-photo">
+          <img src="/Vice Chair.jpeg" alt="Rudrabha Dasgupta as Vice Chairperson of SBE VIT" loading="lazy" />
+          <div class="cap">Vice Chairperson · SBE VIT</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <section id="lead" class="section" aria-label="Leadership, Business and Marketing">
-  <div class="section-num">04 — Leadership, Business & Marketing</div>
-  <h2>Leadership,<br>Business &<br>Marketing</h2>
-  <div class="copy">
-    A great product only matters if it reaches the people who need it. I balance my technical builds with strong leadership and marketing acumen.
+  <div class="reveal">
+    <div class="section-num">05 — Leadership, Business &amp; Marketing</div>
+    <h2>Leadership,<br>Business &amp;<br><em>Marketing</em></h2>
+    <div class="copy">
+      A great product only matters if it reaches the people who need it. I balance my technical builds with strong leadership and marketing acumen.
+    </div>
   </div>
 
   <div class="grid">
-    <div class="block">
+    <div class="block reveal">
       <div class="t">Campus leadership</div>
       <div class="b">
         <strong>Vice Chairperson, Society for Biological Engineering (SBE) at VIT:</strong> Leading a community of engineers, organizing initiatives, and fostering a culture of bio-innovation on campus.
       </div>
     </div>
-    <div class="block">
+    <div class="block reveal">
       <div class="t">Entrepreneurship</div>
       <div class="b">
-        <strong>Founder & Lead, Event Sutra:</strong> Successfully built and manage a profitable startup focused on end-to-end event management, logistics, and securing corporate sponsorships.
+        <strong>Founder &amp; Lead, Event Sutra:</strong> Successfully built and manage a profitable startup focused on end-to-end event management, logistics, and securing corporate sponsorships.
       </div>
     </div>
-    <div class="block">
+    <div class="block reveal">
       <div class="t">Marketing</div>
       <div class="b">
         <strong>Influencer Marketing Intern, Marketing Geeks:</strong> Honed my digital growth strategies, mastering off-page SEO, link-building architecture, and high-level digital networking.
       </div>
     </div>
-    <div class="block">
+    <div class="block reveal">
       <div class="t">Ecosystem behind the drive</div>
       <div class="b">
         Innovation doesn't happen in a vacuum. My approach to problem-solving requires both rigorous logic and creative intuition, driven by a deep respect for the craft of engineering and science.
@@ -264,11 +479,20 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
 
 <footer>
   <span class="footer-text">About Me · 2026</span>
-  <span class="footer-brand">Rudrabha Dasgupta</span>
+  <span class="footer-brand">Rudrabha <em>Dasgupta</em></span>
 </footer>
 
 <script>
-// hero mesh wave (same visual language)
+// scroll reveal
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.15});
+  els.forEach(el=>io.observe(el));
+})();
+
+// hero mesh wave — cobalt ink lines on paper
 (function(){
   const canvas = document.getElementById('hero-canvas');
   if(!canvas) return;
@@ -301,31 +525,31 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
     }
 
     for(let r=0;r<=ROWS;r++){
-      const rowAlpha = 0.04 + (r/ROWS)*0.18;
+      const rowAlpha = 0.03 + (r/ROWS)*0.14;
       ctx.beginPath();
       for(let c=0;c<=COLS;c++){
         const p=pts[r][c];
         c===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
       }
-      ctx.strokeStyle=`rgba(181,146,42,${rowAlpha})`;
+      ctx.strokeStyle=`rgba(43,63,242,${rowAlpha})`;
       ctx.lineWidth=0.7;
       ctx.stroke();
     }
 
     for(let c=0;c<=COLS;c++){
-      const colAlpha = 0.03 + Math.sin(c/COLS*Math.PI)*0.12;
+      const colAlpha = 0.02 + Math.sin(c/COLS*Math.PI)*0.09;
       ctx.beginPath();
       for(let r=0;r<=ROWS;r++){
         const p=pts[r][c];
         r===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
       }
-      ctx.strokeStyle=`rgba(181,146,42,${colAlpha})`;
+      ctx.strokeStyle=`rgba(43,63,242,${colAlpha})`;
       ctx.lineWidth=0.6;
       ctx.stroke();
     }
 
     const grd=ctx.createRadialGradient(W*0.75,H*0.38,0,W*0.75,H*0.38,W*0.4);
-    grd.addColorStop(0,'rgba(181,146,42,0.04)');
+    grd.addColorStop(0,'rgba(255,77,33,0.035)');
     grd.addColorStop(1,'transparent');
     ctx.fillStyle=grd;
     ctx.fillRect(0,0,W,H);
@@ -367,34 +591,28 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 60px;display:flex
     }
 
     for(let r=0;r<=ROWS;r++){
-      const rowAlpha = 0.016 + (r/ROWS)*0.06;
+      const rowAlpha = 0.012 + (r/ROWS)*0.05;
       ctx.beginPath();
       for(let c=0;c<=COLS;c++){
         const p=pts[r][c];
         c===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
       }
-      ctx.strokeStyle=`rgba(181,146,42,${rowAlpha})`;
+      ctx.strokeStyle=`rgba(43,63,242,${rowAlpha})`;
       ctx.lineWidth=0.75;
       ctx.stroke();
     }
 
     for(let c=0;c<=COLS;c++){
-      const colAlpha = 0.012 + Math.sin(c/COLS*Math.PI)*0.04;
+      const colAlpha = 0.010 + Math.sin(c/COLS*Math.PI)*0.034;
       ctx.beginPath();
       for(let r=0;r<=ROWS;r++){
         const p=pts[r][c];
         r===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
       }
-      ctx.strokeStyle=`rgba(181,146,42,${colAlpha})`;
+      ctx.strokeStyle=`rgba(43,63,242,${colAlpha})`;
       ctx.lineWidth=0.65;
       ctx.stroke();
     }
-
-    const grd=ctx.createRadialGradient(W*0.22,H*0.55,0,W*0.22,H*0.55,W*0.55);
-    grd.addColorStop(0,'rgba(181,146,42,0.030)');
-    grd.addColorStop(1,'transparent');
-    ctx.fillStyle=grd;
-    ctx.fillRect(0,0,W,H);
 
     requestAnimationFrame(draw);
   }
