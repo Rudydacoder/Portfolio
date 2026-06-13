@@ -539,7 +539,7 @@ export default function App() {
         >
           <img src="/logo.png" alt="R. Dasgupta" className="h-7 md:h-8 w-auto transition-opacity group-hover:opacity-70" draggable={false} />
         </button>
-        <div className="hidden md:flex items-center gap-8 mix-blend-difference text-white">
+        <div className="hidden md:flex items-center gap-8 text-ink">
           <div className="relative" ref={workMenuRef}>
             <button
               type="button"
