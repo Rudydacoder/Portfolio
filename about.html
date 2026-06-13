@@ -50,6 +50,9 @@ nav{
 }
 .nav-brand{display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--ink);text-transform:uppercase}
 .nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:16px}
+.nav-logo{height:30px;width:auto;display:block;transition:opacity .2s}
+.nav-brand{text-decoration:none}
+.nav-brand:hover .nav-logo{opacity:.7}
 .nav-grid span{width:7px;height:7px;background:var(--ink);display:block}
 .nav-links{display:flex;gap:28px;flex-wrap:wrap;justify-content:flex-end}
 .nav-links a{font-family:'Space Mono',monospace;font-size:11px;font-weight:400;letter-spacing:2px;color:var(--ink);text-decoration:none;text-transform:uppercase;opacity:.8;transition:opacity .2s,color .2s}
@@ -274,10 +277,7 @@ footer{border-top:1px solid var(--rule);padding:40px 60px;display:flex;justify-c
 
 
 <nav>
-  <div class="nav-brand">
-    <div class="nav-grid"><span></span><span></span><span></span><span></span></div>
-    Rudrabha Dasgupta | Innovator
-  </div>
+  <a class="nav-brand" href="./index.html" aria-label="Rudrabha Dasgupta — home"><img class="nav-logo" src="/logo.png" alt="R. Dasgupta"></a>
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#build">Build</a>

@@ -144,14 +144,11 @@ function RelivioTurntable({ reduceMotion }) {
             key={shot.src}
             src={shot.src}
             alt={`Relivio TENS+PBM device — ${shot.label} view`}
-            className="absolute inset-0 w-full h-full object-contain p-10 transition-opacity duration-700"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
             style={{ opacity: active === i ? 1 : 0 }}
             draggable={false}
           />
         ))}
-        <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 font-mono text-[9px] tracking-[0.2em] uppercase text-[#8FA0FF]">
-          {relivioShots[active].label} view
-        </div>
       </div>
 
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
@@ -529,16 +526,20 @@ export default function App() {
       ) : null}
 
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-5 w-full max-w-[1920px] mx-auto mix-blend-difference text-white"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-5 w-full max-w-[1920px] mx-auto"
         initial={reduceMotion ? false : { y: -28, opacity: 0 }}
         animate={reduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex items-center gap-3">
-          <span className="material-symbols-outlined text-[22px]">grid_view</span>
-          <span className="font-mono text-xs font-bold tracking-[0.18em]">RUDRABHA DASGUPTA | INNOVATOR</span>
-        </div>
-        <div className="hidden md:flex items-center gap-8">
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="flex items-center group"
+          aria-label="Rudrabha Dasgupta — back to top"
+        >
+          <img src="/logo.png" alt="R. Dasgupta" className="h-7 md:h-8 w-auto transition-opacity group-hover:opacity-70" draggable={false} />
+        </button>
+        <div className="hidden md:flex items-center gap-8 mix-blend-difference text-white">
           <div className="relative" ref={workMenuRef}>
             <button
               type="button"
