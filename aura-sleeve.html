@@ -35,6 +35,18 @@ body::after{
 }
 ::selection{background:var(--cobalt);color:var(--paper)}
 
+/* PAGE LOADER (holds until CSS + fonts + page are loaded) */
+#page-loader{position:fixed;inset:0;z-index:3000;background:var(--paper);display:flex;align-items:center;justify-content:center;transition:opacity .55s cubic-bezier(.22,1,.36,1),visibility .55s}
+#page-loader.done{opacity:0;visibility:hidden}
+.pl-stack{display:flex;flex-direction:column;align-items:center;gap:16px}
+.pl-text{font-family:'Instrument Serif',serif;font-size:clamp(30px,4.5vw,46px);color:var(--ink)}
+.pl-text em{color:var(--cobalt);font-style:italic}
+.pl-bar{width:min(280px,70vw);height:2px;border-radius:999px;background:rgba(22,21,15,.12);overflow:hidden}
+.pl-bar span{display:block;height:100%;width:38%;background:linear-gradient(90deg,transparent,var(--cobalt),transparent);animation:plSweep 1.05s ease-in-out infinite;transform:translateX(-60%)}
+@keyframes plSweep{0%{transform:translateX(-70%);opacity:.55}50%{opacity:1}100%{transform:translateX(230%);opacity:.55}}
+@media (prefers-reduced-motion: reduce){.pl-bar span{animation:none;transform:translateX(0);width:100%;opacity:.75}}
+
+
 /* ── NAV ── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
@@ -430,6 +442,26 @@ h1{animation-delay:.25s}
 </style>
 </head>
 <body>
+
+<!-- PAGE LOADER (hides once CSS/fonts/page are fully loaded) -->
+<div id="page-loader" aria-hidden="true">
+  <div class="pl-stack">
+    <span class="pl-text">Rudrabha <em>Dasgupta</em></span>
+    <div class="pl-bar"><span></span></div>
+  </div>
+</div>
+<script>
+(function(){
+  var el=document.getElementById('page-loader');
+  if(!el) return;
+  var hide=function(){el.classList.add('done')};
+  var minDelay=new Promise(function(r){setTimeout(r,700)});
+  var loaded=new Promise(function(r){ if(document.readyState==='complete') r(); else window.addEventListener('load',r,{once:true}); });
+  var fonts=(document.fonts&&document.fonts.ready)?document.fonts.ready:Promise.resolve();
+  Promise.race([Promise.all([minDelay,loaded,fonts]),new Promise(function(r){setTimeout(r,5000)})]).then(hide);
+})();
+</script>
+
 
 <!-- NAV -->
 <nav>

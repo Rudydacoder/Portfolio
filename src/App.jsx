@@ -110,6 +110,70 @@ function Counter({ target, suffix = "", label }) {
   );
 }
 
+const relivioShots = [
+  { src: "/relivio-1.png", label: "Three-quarter" },
+  { src: "/relivio-2.png", label: "Top-down" }
+];
+
+function RelivioTurntable({ reduceMotion }) {
+  const [active, setActive] = useState(0);
+  const [auto, setAuto] = useState(true);
+
+  useEffect(() => {
+    if (!auto || reduceMotion) return;
+    const id = setInterval(() => setActive((a) => (a + 1) % relivioShots.length), 2600);
+    return () => clearInterval(id);
+  }, [auto, reduceMotion]);
+
+  return (
+    <div className="relative w-full rounded-2xl overflow-hidden border border-ink bg-[#0E1116] shadow-[12px_12px_0_rgba(22,21,15,0.85)]">
+      <div className="absolute top-3 left-3 z-20 font-mono text-[9px] tracking-[0.2em] uppercase text-paper/55 bg-[#0E1116]/65 border border-[#5468FF]/25 rounded-full px-3 py-1.5 backdrop-blur-sm">
+        Relivio · CAD Model
+      </div>
+      <div className="absolute top-3 right-3 z-20 font-mono text-[9px] tracking-[0.2em] uppercase text-paper/55 bg-[#0E1116]/65 border border-[#5468FF]/25 rounded-full px-3 py-1.5 backdrop-blur-sm">
+        Fusion 360
+      </div>
+
+      <div className="relative aspect-[4/3] w-full">
+        <div
+          className="absolute inset-0"
+          style={{ backgroundImage: "radial-gradient(circle at 50% 62%, rgba(84,104,255,0.20), transparent 62%)" }}
+        />
+        {relivioShots.map((shot, i) => (
+          <img
+            key={shot.src}
+            src={shot.src}
+            alt={`Relivio TENS+PBM device — ${shot.label} view`}
+            className="absolute inset-0 w-full h-full object-contain p-10 transition-opacity duration-700"
+            style={{ opacity: active === i ? 1 : 0 }}
+            draggable={false}
+          />
+        ))}
+        <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 font-mono text-[9px] tracking-[0.2em] uppercase text-[#8FA0FF]">
+          {relivioShots[active].label} view
+        </div>
+      </div>
+
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+        {relivioShots.map((shot, i) => (
+          <button
+            key={shot.src}
+            type="button"
+            onClick={() => {
+              setActive(i);
+              setAuto(false);
+            }}
+            aria-label={`Show ${shot.label} view`}
+            className={`h-2.5 rounded-full transition-all duration-300 ${
+              active === i ? "w-7 bg-[#5468FF]" : "w-2.5 bg-paper/30 hover:bg-paper/60"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [selectedId, setSelectedId] = useState(null);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
@@ -186,6 +250,28 @@ export default function App() {
       document.body.style.overflow = previousOverflow;
     };
   }, [showPreloader]);
+
+  // Hide the preloader only once styles/fonts and the page itself have loaded
+  // (min 1.2s so the intro reads; 6s safety cap so it can never hang).
+  useEffect(() => {
+    let cancelled = false;
+
+    const minDelay = new Promise((resolve) => setTimeout(resolve, 1200));
+    const pageLoaded = new Promise((resolve) => {
+      if (document.readyState === "complete") resolve();
+      else window.addEventListener("load", resolve, { once: true });
+    });
+    const fontsReady = document.fonts?.ready ?? Promise.resolve();
+    const safetyCap = new Promise((resolve) => setTimeout(resolve, 6000));
+
+    Promise.race([Promise.all([minDelay, pageLoaded, fontsReady]), safetyCap]).then(() => {
+      if (!cancelled) setShowPreloader(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const sendDirectEmail = async () => {
     if (!emailJsReady) {
@@ -273,7 +359,6 @@ export default function App() {
     const enableCursor = !motionProfile.coarse && !motionProfile.reduced && !isTerminalOpen;
     document.body.classList.toggle("js-cursor-ready", enableCursor);
 
-    const timer = setTimeout(() => setShowPreloader(false), 1400);
     const last = { x: -100, y: -100, t: performance.now() };
 
     const onMove = (event) => {
@@ -335,7 +420,6 @@ export default function App() {
     onScroll();
 
     return () => {
-      clearTimeout(timer);
       window.removeEventListener("scroll", onScroll);
       if (scrollRafRef.current) cancelAnimationFrame(scrollRafRef.current);
       if (enableCursor) {
@@ -715,6 +799,68 @@ export default function App() {
                       </span>
                     ))}
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section id="internships" className="relative w-full py-24 md:py-32 bg-paper/85 border-t border-ink/15" {...revealMotion}>
+          <div className="w-full max-w-[1920px] mx-auto px-6 md:pl-[10%] md:pr-[10%]">
+            <div className="mb-14 flex items-end justify-between flex-wrap gap-4">
+              <div>
+                <div className="micro-label mb-4">Internships &amp; Industry Work</div>
+                <h3 className="display-serif text-ink text-5xl md:text-7xl leading-none">From the lab<br />to a <em>brand</em>.</h3>
+              </div>
+              <p className="font-mono text-[11px] text-ink-faint uppercase tracking-[0.2em] max-w-xs md:text-right">
+                Where research-grade engineering meets a shipping product.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+              <RelivioTurntable reduceMotion={reduceMotion} />
+
+              <div>
+                <div className="inline-block font-mono text-[10px] uppercase tracking-[0.18em] text-vermilion border border-vermilion/40 bg-vermilion/5 px-3 py-1 rounded-full mb-5">
+                  ★ Internship · Emami Ltd
+                </div>
+                <h2 className="display-serif text-ink text-5xl md:text-6xl leading-[0.95] mb-1">Relivio</h2>
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-ink-faint mb-6">Dual-Modality Pain-Relief Patch</p>
+                <p className="text-ink-soft text-lg leading-relaxed max-w-xl mb-8">
+                  An all-in-one wearable patch that pairs <strong className="text-ink font-semibold">TENS</strong> electrical
+                  stimulation with <strong className="text-ink font-semibold">Photobiomodulation (PBM)</strong> light therapy in a
+                  single skin-worn device — designed and prototyped as an internship project for Emami Ltd.
+                </p>
+
+                <div className="flex flex-col gap-0 mb-8 max-w-xl">
+                  {[
+                    ["TENS", "Biphasic · 1–150 Hz · 0–50 mA · dual channel · 6 presets"],
+                    ["PBM", "4× 660 nm red + 4× 940 nm IR LEDs · 4 presets"],
+                    ["Modes", "Simultaneous · Sequential · TENS-only · PBM-only"],
+                    ["Compute", "ESP32-S3 (proposed) · BLE GATT service profile"],
+                    ["App", "Flutter companion · iOS + Android · live BLE control"]
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex items-start justify-between gap-5 py-3 border-b border-ink/12">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-ink-faint pt-1 shrink-0">{k}</span>
+                      <span className="text-ink text-sm text-right leading-relaxed">{v}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mb-7">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-cobalt mb-2">My role</div>
+                  <p className="text-ink-soft text-base leading-relaxed max-w-xl">
+                    Designed the device in Fusion 360, specced the MCU and BLE service profile, and built the cross-platform
+                    Flutter app that controls both modalities in real time.
+                  </p>
+                </div>
+
+                <div className="flex gap-2 flex-wrap">
+                  {["Fusion 360", "Embedded / BLE", "Flutter", "Medical Device", "TENS + PBM"].map((tag) => (
+                    <span key={tag} className="px-3 py-1.5 bg-paper text-ink text-xs rounded-full border border-ink/20 font-mono uppercase tracking-[0.12em]">
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
